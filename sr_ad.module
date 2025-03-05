@@ -6,6 +6,8 @@
 hostname = %APPEND%, weixinacc.qinlinyun.com
 
 [Rule]
+DOMAIN-SUFFIX,audid-api.taobao.com,REJECT
+DOMAIN-SUFFIX,gw.alicdn.com,REJECT
 DOMAIN-SUFFIX,alipayobjects.com,REJECT
 DOMAIN-SUFFIX,datagw-edge.alipay.com,REJECT
 DOMAIN-SUFFIX,mdap.alipay.com,REJECT
