@@ -51,6 +51,9 @@ dns:
     "*.ximalaya.com": 114.114.114.114,
     "*.baidu.com": 114.114.114.114,
     "*.bdstatic.com": 114.114.114.114,
+    # 广告屏蔽
+    "rule-set:reject": rcode://success
+    "geosite:category-ads-all,bytedance@ads,tracker,category-public-tracker": rcode://success
   # 支持 UDP、TCP、DoT、DoH. 您可以指定要连接的端口.
   # 所有 DNS 查询都直接发送到名称服务器, 无需代理
   # Clash 使用第一个收到的响应作为 DNS 查询的结果.
