@@ -3,7 +3,7 @@
 #!notes=清除牛皮癣，人人有责！
 
 [MITM]
-hostname = %APPEND%, weixinacc.qinlinyun.com, datagw-edge.alipay.com
+hostname = %APPEND%, weixinacc.qinlinyun.com, datagw-edge.alipay.com, guide-acs.m.taobao.com
 
 [Rule]
 # 支付宝小程序广告
