@@ -22,10 +22,9 @@ DOMAIN-SUFFIX,mdap.alipay.com,REJECT
 # 微信小程序豪云社区
 DOMAIN-SUFFIX,ksedt.com,REJECT
 DOMAIN-SUFFIX,ctobsnssdk.com,REJECT
-DOMAIN-SUFFIX,pangolin-sdk-toutiao1.com,REJECT
-DOMAIN-SUFFIX,pangolin-sdk-toutiao1.com,REJECT
-DOMAIN-SUFFIX,pangolin-sdk-toutiao.com,REJECT
-DOMAIN-SUFFIX,kuaishou.com,REJECT
+DOMAIN-KEYWORD,toutiao,REJECT
+DOMAIN-KEYWORD,kuaishou,REJECT
+DOMAIN-KEYWORD,douyin,REJECT
 DOMAIN-SUFFIX,adukwai.com,REJECT
 DOMAIN-SUFFIX,live.com,PROXY
 DOMAIN-SUFFIX,mtyun.com,REJECT
