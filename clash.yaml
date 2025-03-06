@@ -25,32 +25,32 @@ dns:
     - "*.local"
     - localhost.ptlogin2.qq.com
   nameserver-policy:
-    "*.tw": 1.1.1.1,
-    testflight.apple.com: 8.8.8.8,
-    "*.tmall.com": 223.5.5.5,
-    "*.taobao.com": 223.5.5.5,
-    "*.alicdn.com": 223.5.5.5,
-    "*.aliyun.com": 223.5.5.5,
-    "*.alipay*.com": 223.5.5.5,
-    "*.alibaba*.com": 223.5.5.5,
-    "*.alimama*.com": 223.5.5.5,
-    "*.qq.com": 114.114.114.114,
-    "*.tencent.com": 114.114.114.114,
-    "*.weixin.com": 114.114.114.114,
-    "*.qpic.cn": 114.114.114.114,
-    "*.jd.com": 114.114.114.114,
-    "*.bilibili.com": 114.114.114.114,
-    hdslb.com: 114.114.114.114,
-    "*.163.com": 119.29.29.29,
-    "*.126.com": 119.29.29.29,
-    "*.126.net": 114.114.114.114,
-    "*.127.net": 114.114.114.114,
-    "*.netease.com": 114.114.114.114,
-    "*.10010.com": 114.114.114.114,
-    "*.unicompayment.com": 114.114.114.114,
-    "*.ximalaya.com": 114.114.114.114,
-    "*.baidu.com": 114.114.114.114,
-    "*.bdstatic.com": 114.114.114.114,
+    "*.tw": 1.1.1.1
+    testflight.apple.com: 8.8.8.8
+    "*.tmall.com": 223.5.5.5
+    "*.taobao.com": 223.5.5.5
+    "*.alicdn.com": 223.5.5.5
+    "*.aliyun.com": 223.5.5.5
+    "*.alipay*.com": 223.5.5.5
+    "*.alibaba*.com": 223.5.5.5
+    "*.alimama*.com": 223.5.5.5
+    "*.qq.com": 114.114.114.114
+    "*.tencent.com": 114.114.114.114
+    "*.weixin.com": 114.114.114.114
+    "*.qpic.cn": 114.114.114.114
+    "*.jd.com": 114.114.114.114
+    "*.bilibili.com": 114.114.114.114
+    hdslb.com: 114.114.114.114
+    "*.163.com": 119.29.29.29
+    "*.126.com": 119.29.29.29
+    "*.126.net": 114.114.114.114
+    "*.127.net": 114.114.114.114
+    "*.netease.com": 114.114.114.114
+    "*.10010.com": 114.114.114.114
+    "*.unicompayment.com": 114.114.114.114
+    "*.ximalaya.com": 114.114.114.114
+    "*.baidu.com": 114.114.114.114
+    "*.bdstatic.com": 114.114.114.114
     # 广告屏蔽
     "rule-set:reject": rcode://success
     "geosite:category-ads-all,bytedance@ads,tracker,category-public-tracker": rcode://success
@@ -109,7 +109,8 @@ dns:
     geoip: true
     geoip-code: CN
     # geosite 列表的内容被视为已污染，匹配到 geosite 的域名，将只使用 fallback解析，不去使用 nameserver
-    geosite: gfw
+    geosite:
+      - gfw
     # 这些网段的结果会被视为污染，nameserver解析出这些结果时将会采用 fallback的解析结果
     ipcidr:
       - 240.0.0.0/4
