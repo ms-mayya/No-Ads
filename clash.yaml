@@ -53,7 +53,6 @@ dns:
     "*.bdstatic.com": 114.114.114.114
     # 广告屏蔽
     "rule-set:reject": rcode://success
-    "geosite:category-ads-all,bytedance@ads,tracker,category-public-tracker": rcode://success
   # 支持 UDP、TCP、DoT、DoH. 您可以指定要连接的端口.
   # 所有 DNS 查询都直接发送到名称服务器, 无需代理
   # Clash 使用第一个收到的响应作为 DNS 查询的结果.
@@ -147,3 +146,10 @@ dns:
     # 这些域名被视为已污染，匹配到这些域名，会直接使用 fallback解析，不去使用 nameserver
     # domain:
     #   - "+.youtube.com"
+rule-providers:
+  reject:
+    type: http
+    behavior: domain
+    url: https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt
+    path: ./ruleset/loyalsoldier/reject.yaml
+    interval: 86400
