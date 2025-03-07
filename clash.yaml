@@ -54,7 +54,7 @@ dns:
     "*.baidu.com": 114.114.114.114
     "*.bdstatic.com": 114.114.114.114
     # 广告屏蔽
-    "rule-set:reject,ad": rcode://success
+    "rule-set:reject,my-reject,my-classical": rcode://success
   # 支持 UDP、TCP、DoT、DoH. 您可以指定要连接的端口.
   # 所有 DNS 查询都直接发送到名称服务器, 无需代理
   # Clash 使用第一个收到的响应作为 DNS 查询的结果.
@@ -149,12 +149,6 @@ dns:
     # domain:
     #   - "+.youtube.com"
 rule-providers:
-  ad:
-    type: http
-    behavior: domain
-    url: https://fastly.jsdelivr.net/gh/ms-mayya/No-Ads@clash/clash-rules/reject.txt
-    path: ./ruleset/ms-mayya/reject.yaml
-    interval: 86400
   reject:
     type: http
     behavior: domain
@@ -232,4 +226,28 @@ rule-providers:
     behavior: classical
     url: "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/applications.txt"
     path: ./ruleset/loyalsoldier/applications.yaml
+    interval: 86400
+  my-reject:
+    type: http
+    behavior: domain
+    url: https://fastly.jsdelivr.net/gh/ms-mayya/No-Ads@clash/clash-rules/reject.yaml
+    path: ./ruleset/ms-mayya/reject.yaml
+    interval: 86400
+  my-direct:
+    type: http
+    behavior: domain
+    url: https://fastly.jsdelivr.net/gh/ms-mayya/No-Ads@clash/clash-rules/direct.yaml
+    path: ./ruleset/ms-mayya/direct.yaml
+    interval: 86400
+  my-proxy:
+    type: http
+    behavior: domain
+    url: https://fastly.jsdelivr.net/gh/ms-mayya/No-Ads@clash/clash-rules/proxy.yaml
+    path: ./ruleset/ms-mayya/proxy.yaml
+    interval: 86400
+  my-classical:
+    type: http
+    behavior: classical
+    url: https://fastly.jsdelivr.net/gh/ms-mayya/No-Ads@clash/clash-rules/classical.yaml
+    path: ./ruleset/ms-mayya/classical.yaml
     interval: 86400
