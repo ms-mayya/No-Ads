@@ -1,3 +1,2 @@
 payload:
   - 'guide-acs.m.taobao.com'
-  - 'baidu.com'
