@@ -52,7 +52,7 @@ dns:
     "*.baidu.com": 114.114.114.114
     "*.bdstatic.com": 114.114.114.114
     # 广告屏蔽
-    "rule-set:reject": rcode://success
+    "rule-set:reject,niupixuan": rcode://success
   # 支持 UDP、TCP、DoT、DoH. 您可以指定要连接的端口.
   # 所有 DNS 查询都直接发送到名称服务器, 无需代理
   # Clash 使用第一个收到的响应作为 DNS 查询的结果.
@@ -152,4 +152,10 @@ rule-providers:
     behavior: domain
     url: https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt
     path: ./ruleset/loyalsoldier/reject.yaml
+    interval: 86400
+  niupixuan:
+    type: http
+    behavior: domain
+    url: https://fastly.jsdelivr.net/gh/ms-mayya/No-Ads@clash/clash-rules/reject.txt
+    path: ./ruleset/ms-mayya/reject.yaml
     interval: 86400
