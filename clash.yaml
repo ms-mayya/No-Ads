@@ -16,6 +16,8 @@ clash-for-android:
   append-system-dns: false
 dns:
   enable: true
+  # 是否查询系统 hosts，默认 true
+  use-system-hosts: false
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
   # 此列表中的主机名将不会使用 Fake IP 解析
