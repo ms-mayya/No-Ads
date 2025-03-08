@@ -1,7 +1,6 @@
 payload:
   - 'adgw.alipay.com'
   - 'amdc-thirdparty.alipay.com'
-  - 'cdn.ynuf.aliapp.org'
   - 'datagw-edge.alipay.com'
   - 'g.cn.miaozhen.com'
   - 'guide-acs.m.taobao.com'
