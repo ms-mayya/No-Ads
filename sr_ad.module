@@ -10,7 +10,7 @@ hostname = %APPEND%, weixinacc.qinlinyun.com, datagw-edge.alipay.com, guide-acs.
 DOMAIN-SUFFIX,adgw.alipay.com,REJECT
 DOMAIN-SUFFIX,amdc-thirdparty.alipay.com,REJECT
 DOMAIN-SUFFIX,audid-api.taobao.com,REJECT
-DOMAIN-SUFFIX,cdn.ynuf.aliapp.org,REJECT
+# DOMAIN-SUFFIX,cdn.ynuf.aliapp.org,REJECT
 DOMAIN-SUFFIX,datagw-edge.alipay.com,REJECT
 DOMAIN-SUFFIX,g.cn.miaozhen.com,REJECT
 DOMAIN-SUFFIX,guide-acs.m.taobao.com,REJECT
