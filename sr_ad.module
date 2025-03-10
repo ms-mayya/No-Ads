@@ -36,6 +36,7 @@ DOMAIN-SUFFIX,shifen.com,REJECT
 DOMAIN-SUFFIX,tdnsv5.com,REJECT
 DOMAIN-SUFFIX,wsdvs.com,REJECT
 # 微软服务
+DOMAIN-SUFFIX,teams.cdn.live.net,DIRECT
 DOMAIN-SUFFIX,teams.cdn.live.com,DIRECT
 DOMAIN-SUFFIX,teams.live.com,DIRECT
 DOMAIN-SUFFIX,live.com,PROXY
