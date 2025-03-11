@@ -1,0 +1,253 @@
+# Clash 基本配置
+mixed-port: 7890
+allow-lan: false
+mode: Rule
+log-level: info
+# Clash for Windows
+cfw-latency-url: http://cp.cloudflare.com/generate_204
+cfw-latency-timeout: 3000
+cfw-latency-type: 1
+cfw-conn-break-strategy: true
+# Stash
+url-rewrite:
+  - ^https?:\/\/(www.)?(g|google)\.cn https://www.google.com 302
+  - ^https?:\/\/(ditu|maps).google\.cn https://maps.google.com 302
+clash-for-android:
+  append-system-dns: false
+dns:
+  enable: true
+  # 是否查询系统 hosts，默认 true
+  use-system-hosts: false
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  # 此列表中的主机名将不会使用 Fake IP 解析
+  # 即, 对这些域名的请求将始终使用其真实 IP 地址进行响应
+  fake-ip-filter:
+    - "*.lan"
+    - "*.local"
+    - localhost.ptlogin2.qq.com
+  nameserver-policy:
+    "*.tw": 1.1.1.1
+    testflight.apple.com: 8.8.8.8
+    "*.tmall.com": 223.5.5.5
+    "*.taobao.com": 223.5.5.5
+    "*.alicdn.com": 223.5.5.5
+    "*.aliyun.com": 223.5.5.5
+    "*.alipay*.com": 223.5.5.5
+    "*.alibaba*.com": 223.5.5.5
+    "*.alimama*.com": 223.5.5.5
+    "*.qq.com": 114.114.114.114
+    "*.tencent.com": 114.114.114.114
+    "*.weixin.com": 114.114.114.114
+    "*.qpic.cn": 114.114.114.114
+    "*.jd.com": 114.114.114.114
+    "*.bilibili.com": 114.114.114.114
+    hdslb.com: 114.114.114.114
+    "*.163.com": 119.29.29.29
+    "*.126.com": 119.29.29.29
+    "*.126.net": 114.114.114.114
+    "*.127.net": 114.114.114.114
+    "*.netease.com": 114.114.114.114
+    "*.10010.com": 114.114.114.114
+    "*.unicompayment.com": 114.114.114.114
+    "*.ximalaya.com": 114.114.114.114
+    "*.baidu.com": 114.114.114.114
+    "*.bdstatic.com": 114.114.114.114
+    # 广告屏蔽
+    "rule-set:reject,my-reject,my-classical": rcode://success
+  # 支持 UDP、TCP、DoT、DoH. 您可以指定要连接的端口.
+  # 所有 DNS 查询都直接发送到名称服务器, 无需代理
+  # Clash 使用第一个收到的响应作为 DNS 查询的结果.
+  nameserver:
+    - 119.29.29.29
+    - 223.5.5.5
+    - https://dns.alidns.com/dns-query # 阿里云公共DNS
+    - https://doh.pub/dns-query # 腾讯DNSPod
+    -  # https://doh.360.cn/dns-query, # 360安全DNS
+    - 114.114.114.114
+    - 156.154.70.1
+    - 1.0.0.1
+    - 8.8.4.4
+  # 代理节点域名解析服务器，仅用于解析代理节点的域名，如果不填则遵循nameserver-policy、nameserver和fallback的配置
+  # proxy-server-nameserver:
+  # - 8.8.8.8
+  # 当 `fallback` 存在时, DNS 服务器将向此部分中的服务器
+  # 与 `nameservers` 中的服务器发送并发请求
+  # 当 GEOIP 国家不是 `CN` 时, 将使用 fallback 服务器的响应
+  fallback:
+    - "208.67.222.222:5353"
+    - "208.67.220.220:5353"
+    - "208.67.222.220:5353"
+    - "208.67.220.222:5353"
+    - "https://1.1.1.1/dns-query" # Cloudflare(主)
+    - "https://1.1.1.2/dns-query" # Cloudflare(备)
+    - "https://1.1.1.3/dns-query" # Cloudflare(备)
+    - "https://1.0.0.1/dns-query" # Cloudflare(备)
+    - "https://1.0.0.2/dns-query" # Cloudflare(备)
+    - "https://1.0.0.3/dns-query" # Cloudflare(备)
+    - "https://45.11.45.11/dns-query" # DNS.SB
+    - "https://146.112.41.2/dns-query"
+    - "https://162.159.36.1/dns-query"
+    - "https://162.159.46.1/dns-query"
+    - "https://9.9.9.11:5053/dns-query"
+    - "https://101.6.6.6:8443/dns-query"
+    - "https://208.67.222.222/dns-query"
+    - "https://208.67.220.220/dns-query"
+    - "https://185.222.222.222/dns-query"
+    - "https://101.101.101.101/dns-query"
+    - "https://149.112.112.11:5053/dns-query"
+  # 如果使用 `nameservers` 解析的 IP 地址在下面指定的子网中,
+  # 则认为它们无效, 并使用 `fallback` 服务器的结果.
+  #
+  # 当 `fallback-filter.geoip` 为 true 且 IP 地址的 GEOIP 为 `CN` 时,
+  # 将使用 `nameservers` 服务器解析的 IP 地址.
+  #
+  # 如果 `fallback-filter.geoip` 为 false, 且不匹配 `fallback-filter.ipcidr`,
+  # 则始终使用 `nameservers` 服务器的结果
+  #
+  # 这是对抗 DNS 污染攻击的一种措施.
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+    # geosite 列表的内容被视为已污染，匹配到 geosite 的域名，将只使用 fallback解析，不去使用 nameserver
+    geosite:
+      - gfw
+    # 这些网段的结果会被视为污染，nameserver解析出这些结果时将会采用 fallback的解析结果
+    ipcidr:
+      - 240.0.0.0/4
+      #反诈 拦截
+      - 101.35.177.86/32
+      - 106.74.25.198/32
+      - 111.28.0.32/32
+      - 111.31.192.110/32
+      - 111.56.127.216/32
+      - 111.63.132.170/32
+      - 112.54.50.50/32
+      - 117.156.25.11/32
+      - 120.204.204.201/32
+      - 120.209.204.204/32
+      - 120.222.19.204/32
+      - 182.43.124.6/32
+      - 183.203.36.36/32
+      - 183.220.145.129/32
+      - 183.252.183.9/32
+      - 211.137.117.149/32
+      - 211.137.54.227/32
+      - 211.138.218.190/32
+      - 211.139.145.129/32
+      - 218.201.25.129/32
+      - 218.203.122.98/32
+      - 221.130.39.3/32
+      - 221.180.160.221/32
+      - 221.181.13.25/32
+      - 36.135.82.110/32
+      - 36.138.129.47/32
+      - 39.102.194.95/32
+      - 39.130.181.72/32
+      - 47.92.198.202/32
+    # 这些域名被视为已污染，匹配到这些域名，会直接使用 fallback解析，不去使用 nameserver
+    # domain:
+    #   - "+.youtube.com"
+rule-providers:
+  reject:
+    type: http
+    behavior: domain
+    url: "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt"
+    path: ./ruleset/loyalsoldier/reject.yaml
+    interval: 86400
+  icloud:
+    type: http
+    behavior: domain
+    url: "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt"
+    path: ./ruleset/loyalsoldier/icloud.yaml
+    interval: 86400
+  apple:
+    type: http
+    behavior: domain
+    url: "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt"
+    path: ./ruleset/loyalsoldier/apple.yaml
+    interval: 86400
+  google:
+    type: http
+    behavior: domain
+    url: "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/google.txt"
+    path: ./ruleset/loyalsoldier/google.yaml
+    interval: 86400
+  proxy:
+    type: http
+    behavior: domain
+    url: "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/proxy.txt"
+    path: ./ruleset/loyalsoldier/proxy.yaml
+    interval: 86400
+  direct:
+    type: http
+    behavior: domain
+    url: "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/direct.txt"
+    path: ./ruleset/loyalsoldier/direct.yaml
+    interval: 86400
+  private:
+    type: http
+    behavior: domain
+    url: "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/private.txt"
+    path: ./ruleset/loyalsoldier/private.yaml
+    interval: 86400
+  gfw:
+    type: http
+    behavior: domain
+    url: "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/gfw.txt"
+    path: ./ruleset/loyalsoldier/gfw.yaml
+    interval: 86400
+  tld-not-cn:
+    type: http
+    behavior: domain
+    url: "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/tld-not-cn.txt"
+    path: ./ruleset/loyalsoldier/tld-not-cn.yaml
+    interval: 86400
+  telegramcidr:
+    type: http
+    behavior: ipcidr
+    url: "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/telegramcidr.txt"
+    path: ./ruleset/loyalsoldier/telegramcidr.yaml
+    interval: 86400
+  cncidr:
+    type: http
+    behavior: ipcidr
+    url: "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/cncidr.txt"
+    path: ./ruleset/loyalsoldier/cncidr.yaml
+    interval: 86400
+  lancidr:
+    type: http
+    behavior: ipcidr
+    url: "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/lancidr.txt"
+    path: ./ruleset/loyalsoldier/lancidr.yaml
+    interval: 86400
+  applications:
+    type: http
+    behavior: classical
+    url: "https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/applications.txt"
+    path: ./ruleset/loyalsoldier/applications.yaml
+    interval: 86400
+  my-reject:
+    type: http
+    behavior: domain
+    url: https://fastly.jsdelivr.net/gh/ms-mayya/No-Ads@clash/clash-rules/reject.yaml
+    path: ./ruleset/ms-mayya/reject.yaml
+    interval: 86400
+  my-direct:
+    type: http
+    behavior: domain
+    url: https://fastly.jsdelivr.net/gh/ms-mayya/No-Ads@clash/clash-rules/direct.yaml
+    path: ./ruleset/ms-mayya/direct.yaml
+    interval: 86400
+  my-proxy:
+    type: http
+    behavior: domain
+    url: https://fastly.jsdelivr.net/gh/ms-mayya/No-Ads@clash/clash-rules/proxy.yaml
+    path: ./ruleset/ms-mayya/proxy.yaml
+    interval: 86400
+  my-classical:
+    type: http
+    behavior: classical
+    url: https://fastly.jsdelivr.net/gh/ms-mayya/No-Ads@clash/clash-rules/classical.yaml
+    path: ./ruleset/ms-mayya/classical.yaml
+    interval: 86400
