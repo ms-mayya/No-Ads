@@ -1,19 +1,13 @@
 # Clash 基本配置
+# socks5/http(s) 端口
 mixed-port: 7890
-allow-lan: false
-mode: Rule
+allow-lan: true
+mode: rule
 log-level: info
-# Clash for Windows
-cfw-latency-url: http://cp.cloudflare.com/generate_204
-cfw-latency-timeout: 3000
-cfw-latency-type: 1
-cfw-conn-break-strategy: true
-# Stash
 url-rewrite:
   - ^https?:\/\/(www.)?(g|google)\.cn https://www.google.com 302
   - ^https?:\/\/(ditu|maps).google\.cn https://maps.google.com 302
-clash-for-android:
-  append-system-dns: false
+unified-delay: true
 dns:
   enable: true
   # 是否查询系统 hosts，默认 true
