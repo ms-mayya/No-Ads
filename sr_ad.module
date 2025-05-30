@@ -43,3 +43,5 @@ DOMAIN-SUFFIX,live.com,PROXY
 
 # 豪云社区微信小程序
 URL-REGEX,^https?:\/\/.*adInf.*,REJECT
+
+DOMAIN-SUFFIX,bugly.qq.com,REJECT
