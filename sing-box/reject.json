@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "domain": [],
+      "domain_suffix": ["ksedt.com", "ctobsnssdk.com"],
+      "domain_regex": ["^https?:\\/\\/.*adInf.*"]
+    }
+  ]
+}
