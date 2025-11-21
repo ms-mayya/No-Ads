@@ -8,16 +8,16 @@ hostname = %APPEND%, weixinacc.qinlinyun.com, datagw-edge.alipay.com, guide-acs.
 [Rule]
 # 支付宝小程序广告
 DOMAIN-SUFFIX,adgw.alipay.com,REJECT
-DOMAIN-SUFFIX,amdc-thirdparty.alipay.com,REJECT
-DOMAIN-SUFFIX,audid-api.taobao.com,REJECT
-DOMAIN-SUFFIX,cdn.ynuf.aliapp.org,REJECT
-DOMAIN-SUFFIX,datagw-edge.alipay.com,REJECT
-DOMAIN-SUFFIX,g.cn.miaozhen.com,REJECT
-DOMAIN-SUFFIX,guide-acs.m.taobao.com,REJECT
-DOMAIN-SUFFIX,gw.alicdn.com,REJECT
-DOMAIN-SUFFIX,gw.alipayobjects.com,REJECT
-DOMAIN-SUFFIX,ilce.alicdn.com,REJECT
-DOMAIN-SUFFIX,mdap.alipay.com,REJECT
+#DOMAIN-SUFFIX,amdc-thirdparty.alipay.com,REJECT
+#DOMAIN-SUFFIX,audid-api.taobao.com,REJECT
+# DOMAIN-SUFFIX,cdn.ynuf.aliapp.org,REJECT
+#DOMAIN-SUFFIX,datagw-edge.alipay.com,REJECT
+#DOMAIN-SUFFIX,g.cn.miaozhen.com,REJECT
+#DOMAIN-SUFFIX,guide-acs.m.taobao.com,REJECT
+#DOMAIN-SUFFIX,gw.alicdn.com,REJECT
+#DOMAIN-SUFFIX,gw.alipayobjects.com,REJECT
+#DOMAIN-SUFFIX,ilce.alicdn.com,REJECT
+#DOMAIN-SUFFIX,mdap.alipay.com,REJECT
 # 微信小程序豪云社区
 DOMAIN-SUFFIX,ksedt.com,REJECT
 DOMAIN-SUFFIX,ctobsnssdk.com,REJECT
@@ -25,7 +25,6 @@ DOMAIN-KEYWORD,toutiao,REJECT
 DOMAIN-KEYWORD,kuaishou,REJECT
 DOMAIN-KEYWORD,douyin,REJECT
 DOMAIN-SUFFIX,adukwai.com,REJECT
-DOMAIN-SUFFIX,live.com,PROXY
 DOMAIN-SUFFIX,mtyun.com,REJECT
 DOMAIN-SUFFIX,maoyan.com,REJECT
 DOMAIN-SUFFIX,dianping.com,REJECT
@@ -36,6 +35,11 @@ DOMAIN-SUFFIX,sankuai.com,REJECT
 DOMAIN-SUFFIX,shifen.com,REJECT
 DOMAIN-SUFFIX,tdnsv5.com,REJECT
 DOMAIN-SUFFIX,wsdvs.com,REJECT
+# 微软服务
+DOMAIN-SUFFIX,teams.cdn.live.net,DIRECT
+DOMAIN-SUFFIX,teams.cdn.live.com,DIRECT
+DOMAIN-SUFFIX,teams.live.com,DIRECT
+DOMAIN-SUFFIX,live.com,PROXY
 
 # 豪云社区微信小程序
 URL-REGEX,^https?:\/\/.*adInf.*,REJECT
