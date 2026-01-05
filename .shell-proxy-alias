@@ -1,0 +1,3 @@
+# Proxy aliases
+alias proxy-on='source ~/.shell-proxy && echo "Proxy enabled"'
+alias proxy-off='unset http_proxy HTTP_PROXY https_proxy HTTPS_PROXY ftp_proxy FTP_PROXY all_proxy ALL_PROXY no_proxy NO_PROXY && echo "Proxy disabled"'
