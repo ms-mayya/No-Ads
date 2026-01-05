@@ -1,8 +1,14 @@
-export HTTP_PROXY=http://127.0.0.1:7890
-export HTTPS_PROXY=http://127.0.0.1:7890
-export ALL_PROXY=socks5h://127.0.0.1:7890
-export NO_PROXY="127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,172.29.0.0/16,localhost,*.local,*.crashlytics.com,<local>"
-export http_proxy=http://127.0.0.1:7890
-export https_proxy=http://127.0.0.1:7890
-export all_proxy=socks5h://127.0.0.1:7890
-export no_proxy="127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,172.29.0.0/16,localhost,*.local,*.crashlytics.com,<local>"
+PROXY_HOST=host.docker.internal
+PROXY_PORT=7890
+
+export http_proxy=socks5://$PROXY_HOST:$PROXY_PORT
+export HTTP_PROXY=socks5://$PROXY_HOST:$PROXY_PORT
+export https_proxy=socks5://$PROXY_HOST:$PROXY_PORT
+export HTTPS_PROXY=socks5://$PROXY_HOST:$PROXY_PORT
+export ftp_proxy=socks5://$PROXY_HOST:$PROXY_PORT
+export FTP_PROXY=socks5://$PROXY_HOST:$PROXY_PORT
+export all_proxy=socks5://$PROXY_HOST:$PROXY_PORT
+export ALL_PROXY=socks5://$PROXY_HOST:$PROXY_PORT
+
+export no_proxy="localhost;127.*;192.168.*;10.*;172.16.*;172.17.*;172.18.*;172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;172.29.*;172.30.*;172.31.*;<local>"
+export NO_PROXY="localhost;127.*;192.168.*;10.*;172.16.*;172.17.*;172.18.*;172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;172.29.*;172.30.*;172.31.*;<local>"
