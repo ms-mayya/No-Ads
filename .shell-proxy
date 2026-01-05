@@ -1,14 +1,27 @@
-PROXY_HOST=host.docker.internal
-PROXY_PORT=7890
+# Proxy configuration
+export PROXY_HOST="host.docker.internal"
+export PROXY_PORT="7890"
+export PROXY_NO="localhost;127.*;192.168.*;10.*;172.16.*;172.17.*;172.18.*;172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;172.29.*;172.30.*;172.31.*;<local>"
 
-export http_proxy=socks5://$PROXY_HOST:$PROXY_PORT
-export HTTP_PROXY=socks5://$PROXY_HOST:$PROXY_PORT
-export https_proxy=socks5://$PROXY_HOST:$PROXY_PORT
-export HTTPS_PROXY=socks5://$PROXY_HOST:$PROXY_PORT
-export ftp_proxy=socks5://$PROXY_HOST:$PROXY_PORT
-export FTP_PROXY=socks5://$PROXY_HOST:$PROXY_PORT
-export all_proxy=socks5://$PROXY_HOST:$PROXY_PORT
-export ALL_PROXY=socks5://$PROXY_HOST:$PROXY_PORT
+proxy-on() {
+    local proxies=(http_proxy HTTP_PROXY https_proxy HTTPS_PROXY ftp_proxy FTP_PROXY all_proxy ALL_PROXY)
+    for proxy in "${proxies[@]}"; do
+        export $proxy="socks5://$PROXY_HOST:$PROXY_PORT"
+    done
+    export no_proxy="$PROXY_NO"
+    export NO_PROXY="$PROXY_NO"
+    echo "✓ Proxy enabled: socks5://$PROXY_HOST:$PROXY_PORT"
+}
 
-export no_proxy="localhost;127.*;192.168.*;10.*;172.16.*;172.17.*;172.18.*;172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;172.29.*;172.30.*;172.31.*;<local>"
-export NO_PROXY="localhost;127.*;192.168.*;10.*;172.16.*;172.17.*;172.18.*;172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;172.29.*;172.30.*;172.31.*;<local>"
+proxy-off() {
+    unset http_proxy HTTP_PROXY https_proxy HTTPS_PROXY ftp_proxy FTP_PROXY all_proxy ALL_PROXY no_proxy NO_PROXY
+    echo "✓ Proxy disabled"
+}
+
+proxy-status() {
+    if [[ -n "$all_proxy" ]]; then
+        echo "✓ Proxy is ON: $all_proxy"
+    else
+        echo "✗ Proxy is OFF"
+    fi
+}
