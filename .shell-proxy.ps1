@@ -4,7 +4,7 @@ $Global:PROXY_PORT = "7890"
 $Global:PROXY_NO = "localhost;127.*;192.168.*;10.*;172.16.*;172.17.*;172.18.*;172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;172.29.*;172.30.*;172.31.*;<local>"
 
 function Global:proxy-on {
-    $proxyUrl = "socks5://${Global:PROXY_HOST}:${Global:PROXY_PORT}"
+    $proxyUrl = "http://${Global:PROXY_HOST}:${Global:PROXY_PORT}"
     @('http_proxy', 'HTTP_PROXY', 'https_proxy', 'HTTPS_PROXY', 'ftp_proxy', 'FTP_PROXY', 'all_proxy', 'ALL_PROXY') | ForEach-Object {
         Set-Item "Env:\$_" $proxyUrl
     }
