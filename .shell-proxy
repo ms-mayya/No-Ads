@@ -6,11 +6,11 @@ export PROXY_NO="localhost;127.*;192.168.*;10.*;172.16.*;172.17.*;172.18.*;172.1
 proxy-on() {
     local proxies=(http_proxy HTTP_PROXY https_proxy HTTPS_PROXY ftp_proxy FTP_PROXY all_proxy ALL_PROXY)
     for proxy in "${proxies[@]}"; do
-        export $proxy="socks5://$PROXY_HOST:$PROXY_PORT"
+        export $proxy="http://$PROXY_HOST:$PROXY_PORT"
     done
     export no_proxy="$PROXY_NO"
     export NO_PROXY="$PROXY_NO"
-    echo "✓ Proxy enabled: socks5://$PROXY_HOST:$PROXY_PORT"
+    echo "✓ Proxy enabled: http://$PROXY_HOST:$PROXY_PORT"
 }
 
 proxy-off() {
