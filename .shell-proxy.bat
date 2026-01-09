@@ -10,7 +10,7 @@ if "%1"=="status" goto status
 goto help
 
 :enable
-set PROXY_URL=socks5://%PROXY_HOST%:%PROXY_PORT%
+set PROXY_URL=http://%PROXY_HOST%:%PROXY_PORT%
 set http_proxy=%PROXY_URL%
 set HTTP_PROXY=%PROXY_URL%
 set https_proxy=%PROXY_URL%
