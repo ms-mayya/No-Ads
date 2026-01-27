@@ -3,7 +3,7 @@
 #!notes=清除牛皮癣，人人有责！
 
 [MITM]
-hostname = %APPEND%, weixinacc.qinlinyun.com, datagw-edge.alipay.com, guide-acs.m.taobao.com
+hostname = %APPEND%, weixinacc.qinlinyun.com, datagw-edge.alipay.com, guide-acs.m.taobao.com, bike.hellobike.com
 
 [Rule]
 # 支付宝小程序广告
@@ -43,5 +43,9 @@ DOMAIN-SUFFIX,live.com,PROXY
 
 # 豪云社区微信小程序
 URL-REGEX,^https?:\/\/.*adInf.*,REJECT
+# 哈啰单车
+URL-REGEX,^https?:\/\/.+\.hellobike\.com\/api\?query\.popup\.entrance
 
 DOMAIN-SUFFIX,bugly.qq.com,REJECT
+
+
