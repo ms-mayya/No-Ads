@@ -44,7 +44,7 @@ DOMAIN-SUFFIX,live.com,PROXY
 # 豪云社区微信小程序
 URL-REGEX,^https?:\/\/.*adInf.*,REJECT
 # 哈啰单车
-URL-REGEX,^https?:\/\/.+\.hellobike\.com\/api\?query\.popup\.entrance
+URL-REGEX,^https?:\/\/.+\.hellobike\.com\/api\?query\.popup\.entrance,REJECT
 
 DOMAIN-SUFFIX,bugly.qq.com,REJECT
 
