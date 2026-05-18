@@ -39,6 +39,7 @@ DOMAIN-SUFFIX,wsdvs.com,REJECT
 DOMAIN-SUFFIX,teams.cdn.live.net,DIRECT
 DOMAIN-SUFFIX,teams.cdn.live.com,DIRECT
 DOMAIN-SUFFIX,teams.live.com,DIRECT
+DOMAIN-SUFFIX,teams.microsoft.com,PROXY
 DOMAIN-SUFFIX,live.com,PROXY
 
 # 豪云社区微信小程序
