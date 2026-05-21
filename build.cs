@@ -110,7 +110,7 @@ string OpenClash()
         if (type is "DOMAIN-SUFFIX" or "DOMAIN-KEYWORD" or "PROCESS-NAME")
             sb.AppendLine($"  - {type},{value},{act}");
     sb.AppendLine("""
-    proxy-groups:
+    +proxy-groups:
       - name: PROXY
         type: select
         proxies:
