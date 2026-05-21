@@ -1,7 +1,28 @@
-[YAML]
-+rules:
+# rules.yaml — 單一來源（Single Source of Truth）
+# 所有格式（Clash / Shadowrocket / QX / OpenClash）均由 build.py 從此檔案自動生成
+
+meta:
+  name: 个人广告过滤
+  desc: 记录生活中遇到广告
+  notes: 清除牛皮癣，人人有责！
+  mitm:
+    hostname: "weixinacc.qinlinyun.com, datagw-edge.alipay.com, guide-acs.m.taobao.com, bike.hellobike.com"
+
+rules:
+  # 支付宝小程序广告
   - DOMAIN-SUFFIX,adgw.alipay.com,REJECT
+  # - DOMAIN-SUFFIX,amdc-thirdparty.alipay.com,REJECT
+  # - DOMAIN-SUFFIX,audid-api.taobao.com,REJECT
+  # - DOMAIN-SUFFIX,cdn.ynuf.aliapp.org,REJECT
+  # - DOMAIN-SUFFIX,datagw-edge.alipay.com,REJECT
+  # - DOMAIN-SUFFIX,g.cn.miaozhen.com,REJECT
   - DOMAIN-SUFFIX,guide-acs.m.taobao.com,REJECT
+  # - DOMAIN-SUFFIX,gw.alicdn.com,REJECT
+  # - DOMAIN-SUFFIX,gw.alipayobjects.com,REJECT
+  # - DOMAIN-SUFFIX,ilce.alicdn.com,REJECT
+  # - DOMAIN-SUFFIX,mdap.alipay.com,REJECT
+
+  # 微信小程序/豪云社区
   - DOMAIN-SUFFIX,ksedt.com,REJECT
   - DOMAIN-SUFFIX,ctobsnssdk.com,REJECT
   - DOMAIN-KEYWORD,toutiao,REJECT
@@ -9,6 +30,8 @@
   - DOMAIN-KEYWORD,douyin,REJECT
   - DOMAIN-SUFFIX,adukwai.com,REJECT
   - DOMAIN-SUFFIX,mtyun.com,REJECT
+  # - DOMAIN-SUFFIX,maoyan.com,REJECT
+  # - DOMAIN-SUFFIX,dianping.com,REJECT
   - DOMAIN-SUFFIX,c-ztuni.tec73.com,REJECT
   - DOMAIN-SUFFIX,kuaishouzt.com,REJECT
   - DOMAIN-SUFFIX,dreport.meituan.net,REJECT
@@ -16,12 +39,22 @@
   - DOMAIN-SUFFIX,shifen.com,REJECT
   - DOMAIN-SUFFIX,tdnsv5.com,REJECT
   - DOMAIN-SUFFIX,wsdvs.com,REJECT
+
+  # URL 重写规则
+  - URL-REGEX,^https?:\/\/.*adInf.*,REJECT
+  - URL-REGEX,^https?:\/\/.+\.hellobike\.com\/api\?query\.popup\.entrance,REJECT
+
+  # 其他广告
   - DOMAIN-SUFFIX,bugly.qq.com,REJECT
+
+  # 直连域名
   - DOMAIN-SUFFIX,teams.cdn.live.net,DIRECT
   - DOMAIN-SUFFIX,teams.cdn.live.com,DIRECT
   - DOMAIN-SUFFIX,teams.live.com,DIRECT
   - DOMAIN-SUFFIX,gouptech.com.tw,DIRECT
   - DOMAIN-SUFFIX,gouptech.com,DIRECT
+
+  # 代理域名
   - DOMAIN-SUFFIX,teams.microsoft.com,PROXY
   - DOMAIN-SUFFIX,live.com,PROXY
   - DOMAIN-SUFFIX,docker.io,PROXY

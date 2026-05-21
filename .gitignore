@@ -1,0 +1,2 @@
+# build output — committed only to the release branch via CI
+dist/
