@@ -1,0 +1,3 @@
+[YAML]
++rules:
+  - DOMAIN-SUFFIX,teams.microsoft.com,PROXY
