@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dns",
+  "title": "dns",
+  "type": "object",
+  "properties": {
+    "enable":          { "type": "boolean", "default": false },
+    "prefer-h3":       { "type": "boolean", "default": false },
+    "ipv6":            { "type": "boolean", "default": false },
+    "ipv6-timeout":    { "type": "integer", "minimum": 0 },
+    "use-hosts":       { "type": "boolean", "default": true },
+    "use-system-hosts":{ "type": "boolean", "default": true },
+    "respect-rules":   { "type": "boolean", "default": false },
+    "listen":          { "type": "string", "description": "host:port — DNS server listen address" },
+
+    "enhanced-mode": {
+      "type": "string",
+      "enum": ["normal", "fake-ip", "redir-host"],
+      "default": "normal"
+    },
+
+    "nameserver": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/nameserverURL" },
+      "description": "required when enable=true"
+    },
+    "fallback": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/nameserverURL" }
+    },
+    "fallback-filter": { "$ref": "#/$defs/fallbackFilter" },
+
+    "default-nameserver": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/nameserverURL" },
+      "minItems": 1,
+      "description": "bootstrap DNS — must be pure IP addresses"
+    },
+
+    "nameserver-policy": {
+      "type": "object",
+      "description": "ordered map: domain/geosite/rule-set key → nameserver(s)",
+      "additionalProperties": {
+        "oneOf": [
+          { "type": "string" },
+          { "type": "array", "items": { "type": "string" } }
+        ]
+      }
+    },
+
+    "proxy-server-nameserver": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/nameserverURL" },
+      "description": "required when respect-rules=true"
+    },
+    "proxy-server-nameserver-policy": {
+      "type": "object",
+      "additionalProperties": {
+        "oneOf": [
+          { "type": "string" },
+          { "type": "array", "items": { "type": "string" } }
+        ]
+      }
+    },
+
+    "direct-nameserver": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/nameserverURL" }
+    },
+    "direct-nameserver-follow-policy": { "type": "boolean", "default": false },
+
+    "fake-ip-range":  {
+      "type": "string",
+      "format": "cidr",
+      "description": "IPv4 CIDR prefix — required for fake-ip mode",
+      "examples": ["198.18.0.1/16"]
+    },
+    "fake-ip-range6": {
+      "type": "string",
+      "format": "cidr",
+      "description": "IPv6 CIDR prefix — optional fake-ip pool"
+    },
+    "fake-ip-filter": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "domain patterns or rule lines excluded/included from fake-ip"
+    },
+    "fake-ip-filter-mode": {
+      "type": "string",
+      "enum": ["blacklist", "whitelist", "rule"],
+      "default": "blacklist"
+    },
+    "fake-ip-ttl": { "type": "integer", "minimum": 0 },
+
+    "cache-algorithm": {
+      "type": "string",
+      "enum": ["lru", "arc"],
+      "default": "lru"
+    },
+    "cache-max-size": { "type": "integer", "minimum": 0 }
+  },
+
+  "$defs": {
+    "nameserverURL": {
+      "type": "string",
+      "description": "Formats: IP, IP:port, udp://IP:port, tcp://…, tls://…, https://…, quic://…, dhcp://interface, system, rcode://name",
+      "examples": [
+        "8.8.8.8",
+        "1.1.1.1:53",
+        "tls://8.8.8.8",
+        "https://cloudflare-dns.com/dns-query",
+        "quic://dns.adguard.com",
+        "dhcp://en0",
+        "system"
+      ]
+    },
+    "fallbackFilter": {
+      "type": "object",
+      "properties": {
+        "geoip":      { "type": "boolean", "default": true },
+        "geoip-code": { "type": "string", "default": "CN" },
+        "ipcidr":     { "type": "array", "items": { "type": "string", "format": "cidr" } },
+        "domain":     { "type": "array", "items": { "type": "string" } },
+        "geosite":    { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

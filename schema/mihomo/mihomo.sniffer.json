@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sniffer",
+  "title": "sniffer",
+  "type": "object",
+  "properties": {
+    "enable":            { "type": "boolean", "default": false },
+    "force-dns-mapping": { "type": "boolean", "default": true },
+    "parse-pure-ip":     { "type": "boolean", "default": true },
+    "override-destination": {
+      "type": "boolean",
+      "default": false,
+      "description": "global default; per-type sniff.*.override-destination overrides this"
+    },
+
+    "sniff": {
+      "type": "object",
+      "description": "preferred way — per-protocol config; keys case-insensitive (uppercased internally)",
+      "propertyNames": {
+        "enum": ["TLS", "HTTP", "QUIC", "tls", "http", "quic"]
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "ports": {
+            "type": "array",
+            "items": { "$ref": "#/$defs/portRange" },
+            "description": "port list/ranges for this sniffer type"
+          },
+          "override-destination": {
+            "type": "boolean",
+            "description": "overrides top-level override-destination for this type"
+          }
+        }
+      }
+    },
+
+    "sniffing": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["TLS", "HTTP", "QUIC", "tls", "http", "quic"] },
+      "description": "deprecated — use sniff instead; applies port-whitelist globally"
+    },
+    "port-whitelist": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/portRange" },
+      "description": "global ports used with deprecated sniffing field"
+    },
+
+    "force-domain": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/domainPattern" },
+      "description": "domains always sniffed; accepts domain patterns, geosite:XXX, rule-set:XXX"
+    },
+    "skip-domain": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/domainPattern" },
+      "description": "domains excluded from sniffing"
+    },
+    "skip-src-address": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/ipPattern" },
+      "description": "source IPs/CIDRs excluded from sniffing; accepts CIDR, geoip:XXX, rule-set:XXX"
+    },
+    "skip-dst-address": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/ipPattern" },
+      "description": "destination IPs/CIDRs excluded from sniffing"
+    }
+  },
+
+  "$defs": {
+    "portRange": {
+      "type": "string",
+      "description": "single port or range: \"80\", \"8000-9000\"",
+      "pattern": "^[0-9]+(\\-[0-9]+)?$",
+      "examples": ["80", "443", "8000-9000"]
+    },
+    "domainPattern": {
+      "type": "string",
+      "description": "domain/wildcard, geosite:NAME, or rule-set:NAME",
+      "examples": ["example.com", "+.google.com", "geosite:cn", "rule-set:my-set"]
+    },
+    "ipPattern": {
+      "type": "string",
+      "description": "CIDR, geoip:CODE, or rule-set:NAME",
+      "examples": ["192.168.0.0/16", "geoip:cn", "rule-set:private"]
+    }
+  }
+}

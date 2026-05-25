@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tun",
+  "title": "tun",
+  "type": "object",
+  "properties": {
+    "enable":               { "type": "boolean", "default": false },
+    "device":               { "type": "string", "description": "TUN device name, e.g. utun0" },
+    "stack": {
+      "type": "string",
+      "enum": ["gVisor", "System", "Mixed"],
+      "description": "case-insensitive",
+      "default": "gVisor"
+    },
+    "dns-hijack": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": ["0.0.0.0:53"],
+      "description": "DNS addresses to hijack, e.g. [\"0.0.0.0:53\", \"tcp://0.0.0.0:53\"]"
+    },
+    "auto-route":            { "type": "boolean", "default": true },
+    "auto-detect-interface": { "type": "boolean", "default": true },
+
+    "mtu":          { "type": "integer", "minimum": 0 },
+    "gso":          { "type": "boolean" },
+    "gso-max-size": { "type": "integer", "minimum": 0 },
+
+    "inet6-address": {
+      "type": "array",
+      "items": { "type": "string", "format": "cidr" },
+      "default": ["fdfe:dcba:9876::1/126"]
+    },
+
+    "iproute2-table-index": { "type": "integer" },
+    "iproute2-rule-index":  { "type": "integer" },
+
+    "auto-redirect":        { "type": "boolean" },
+    "auto-redirect-input-mark":  { "type": "integer", "minimum": 0 },
+    "auto-redirect-output-mark": { "type": "integer", "minimum": 0 },
+    "auto-redirect-iproute2-fallback-rule-index": { "type": "integer" },
+
+    "loopback-address": {
+      "type": "array",
+      "items": { "type": "string", "description": "IP address" }
+    },
+    "strict-route": { "type": "boolean" },
+
+    "route-address": {
+      "type": "array",
+      "items": { "type": "string", "format": "cidr" }
+    },
+    "route-address-set":       { "type": "array", "items": { "type": "string" } },
+    "route-exclude-address": {
+      "type": "array",
+      "items": { "type": "string", "format": "cidr" }
+    },
+    "route-exclude-address-set": { "type": "array", "items": { "type": "string" } },
+
+    "inet4-route-address": {
+      "type": "array",
+      "items": { "type": "string", "format": "cidr" }
+    },
+    "inet6-route-address": {
+      "type": "array",
+      "items": { "type": "string", "format": "cidr" }
+    },
+    "inet4-route-exclude-address": {
+      "type": "array",
+      "items": { "type": "string", "format": "cidr" }
+    },
+    "inet6-route-exclude-address": {
+      "type": "array",
+      "items": { "type": "string", "format": "cidr" }
+    },
+
+    "include-interface": { "type": "array", "items": { "type": "string" } },
+    "exclude-interface": { "type": "array", "items": { "type": "string" } },
+
+    "include-uid":       { "type": "array", "items": { "type": "integer", "minimum": 0 } },
+    "include-uid-range": { "type": "array", "items": { "type": "string", "description": "UID range, e.g. \"1000-9999\"" } },
+    "exclude-uid":       { "type": "array", "items": { "type": "integer", "minimum": 0 } },
+    "exclude-uid-range": { "type": "array", "items": { "type": "string" } },
+
+    "exclude-src-port":       { "type": "array", "items": { "type": "integer", "minimum": 0, "maximum": 65535 } },
+    "exclude-src-port-range": { "type": "array", "items": { "type": "string" } },
+    "exclude-dst-port":       { "type": "array", "items": { "type": "integer", "minimum": 0, "maximum": 65535 } },
+    "exclude-dst-port-range": { "type": "array", "items": { "type": "string" } },
+
+    "include-android-user": { "type": "array", "items": { "type": "integer" }, "description": "Android user IDs" },
+    "include-package":      { "type": "array", "items": { "type": "string" } },
+    "exclude-package":      { "type": "array", "items": { "type": "string" } },
+
+    "include-mac-address": { "type": "array", "items": { "type": "string" } },
+    "exclude-mac-address": { "type": "array", "items": { "type": "string" } },
+
+    "endpoint-independent-nat": { "type": "boolean" },
+    "udp-timeout":              { "type": "integer", "description": "seconds" },
+    "disable-icmp-forwarding":  { "type": "boolean" },
+    "file-descriptor":          { "type": "integer", "description": "use existing fd instead of creating TUN device" },
+
+    "recvmsgx": { "type": "boolean", "default": true,  "description": "macOS/Darwin only" },
+    "sendmsgx": { "type": "boolean", "default": false, "description": "macOS/Darwin only; disabled by default — may freeze kernel during multi-thread downloads" }
+  }
+}

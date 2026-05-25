@@ -1,0 +1,481 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "proxies",
+  "title": "proxies",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["type", "name"],
+    "discriminator": { "propertyName": "type" },
+    "oneOf": [
+      { "$ref": "#/$defs/ss" },
+      { "$ref": "#/$defs/ssr" },
+      { "$ref": "#/$defs/socks5" },
+      { "$ref": "#/$defs/http" },
+      { "$ref": "#/$defs/vmess" },
+      { "$ref": "#/$defs/vless" },
+      { "$ref": "#/$defs/snell" },
+      { "$ref": "#/$defs/trojan" },
+      { "$ref": "#/$defs/hysteria" },
+      { "$ref": "#/$defs/hysteria2" },
+      { "$ref": "#/$defs/wireguard" },
+      { "$ref": "#/$defs/tuic" },
+      { "$ref": "#/$defs/ssh" },
+      { "$ref": "#/$defs/mieru" },
+      { "$ref": "#/$defs/anytls" },
+      { "$ref": "#/$defs/direct" },
+      { "$ref": "#/$defs/dns" },
+      { "$ref": "#/$defs/reject" }
+    ]
+  },
+  "$defs": {
+    "_basic": {
+      "properties": {
+        "tfo":            { "type": "boolean" },
+        "mptcp":          { "type": "boolean" },
+        "interface-name": { "type": "string" },
+        "routing-mark":   { "type": "integer" },
+        "ip-version":     { "type": "string", "enum": ["dual","ipv4","ipv6","ipv4-prefer","ipv6-prefer"] },
+        "dialer-proxy":   { "type": "string" }
+      }
+    },
+    "_tls": {
+      "properties": {
+        "tls":                { "type": "boolean" },
+        "sni":                { "type": "string" },
+        "skip-cert-verify":   { "type": "boolean" },
+        "fingerprint":        { "type": "string" },
+        "certificate":        { "type": "string" },
+        "private-key":        { "type": "string" },
+        "alpn":               { "type": "array", "items": { "type": "string" } },
+        "client-fingerprint": { "type": "string" },
+        "ech-opts":           { "$ref": "#/$defs/ECHOptions" }
+      }
+    },
+    "ECHOptions": {
+      "type": "object",
+      "properties": {
+        "enable":            { "type": "boolean" },
+        "config":            { "type": "string" },
+        "query-server-name": { "type": "string" }
+      }
+    },
+    "RealityOptions": {
+      "type": "object",
+      "required": ["public-key"],
+      "properties": {
+        "public-key":              { "type": "string" },
+        "short-id":                { "type": "string" },
+        "support-x25519mlkem768":  { "type": "boolean" }
+      }
+    },
+    "HTTPOptions": {
+      "type": "object",
+      "properties": {
+        "method":  { "type": "string" },
+        "path":    { "type": "array", "items": { "type": "string" } },
+        "headers": { "type": "object", "additionalProperties": { "type": "array", "items": { "type": "string" } } }
+      }
+    },
+    "HTTP2Options": {
+      "type": "object",
+      "properties": {
+        "host": { "type": "array", "items": { "type": "string" } },
+        "path": { "type": "string" }
+      }
+    },
+    "GrpcOptions": {
+      "type": "object",
+      "properties": {
+        "grpc-service-name": { "type": "string" },
+        "grpc-user-agent":   { "type": "string" },
+        "ping-interval":     { "type": "integer" },
+        "max-connections":   { "type": "integer" },
+        "min-streams":       { "type": "integer" },
+        "max-streams":       { "type": "integer" }
+      }
+    },
+    "WSOptions": {
+      "type": "object",
+      "properties": {
+        "path":                          { "type": "string" },
+        "headers":                       { "type": "object", "additionalProperties": { "type": "string" } },
+        "max-early-data":                { "type": "integer" },
+        "early-data-header-name":        { "type": "string" },
+        "v2ray-http-upgrade":            { "type": "boolean" },
+        "v2ray-http-upgrade-fast-open":  { "type": "boolean" }
+      }
+    },
+
+    "ss": {
+      "allOf": [{ "$ref": "#/$defs/_basic" }],
+      "required": ["type","name","server","port","password","cipher"],
+      "properties": {
+        "type":                 { "const": "ss" },
+        "name":                 { "type": "string" },
+        "server":               { "type": "string" },
+        "port":                 { "type": "integer" },
+        "password":             { "type": "string" },
+        "cipher":               { "type": "string" },
+        "udp":                  { "type": "boolean" },
+        "plugin":               { "type": "string", "enum": ["obfs","v2ray-plugin","shadow-tls","restls","gost","kcptun"] },
+        "plugin-opts":          { "type": "object" },
+        "udp-over-tcp":         { "type": "boolean" },
+        "udp-over-tcp-version": { "type": "integer" },
+        "client-fingerprint":   { "type": "string" }
+      }
+    },
+
+    "ssr": {
+      "allOf": [{ "$ref": "#/$defs/_basic" }],
+      "required": ["type","name","server","port","password","cipher","obfs","protocol"],
+      "properties": {
+        "type":           { "const": "ssr" },
+        "name":           { "type": "string" },
+        "server":         { "type": "string" },
+        "port":           { "type": "integer" },
+        "password":       { "type": "string" },
+        "cipher":         { "type": "string" },
+        "obfs":           { "type": "string" },
+        "obfs-param":     { "type": "string" },
+        "protocol":       { "type": "string" },
+        "protocol-param": { "type": "string" },
+        "udp":            { "type": "boolean" }
+      }
+    },
+
+    "socks5": {
+      "allOf": [{ "$ref": "#/$defs/_basic" }, { "$ref": "#/$defs/_tls" }],
+      "required": ["type","name","server","port"],
+      "properties": {
+        "type":     { "const": "socks5" },
+        "name":     { "type": "string" },
+        "server":   { "type": "string" },
+        "port":     { "type": "integer" },
+        "username": { "type": "string" },
+        "password": { "type": "string" },
+        "udp":      { "type": "boolean" }
+      }
+    },
+
+    "http": {
+      "allOf": [{ "$ref": "#/$defs/_basic" }, { "$ref": "#/$defs/_tls" }],
+      "required": ["type","name","server","port"],
+      "properties": {
+        "type":     { "const": "http" },
+        "name":     { "type": "string" },
+        "server":   { "type": "string" },
+        "port":     { "type": "integer" },
+        "username": { "type": "string" },
+        "password": { "type": "string" },
+        "headers":  { "type": "object", "additionalProperties": { "type": "string" } }
+      }
+    },
+
+    "vmess": {
+      "allOf": [{ "$ref": "#/$defs/_basic" }, { "$ref": "#/$defs/_tls" }],
+      "required": ["type","name","server","port","uuid","alterId","cipher"],
+      "properties": {
+        "type":                 { "const": "vmess" },
+        "name":                 { "type": "string" },
+        "server":               { "type": "string" },
+        "port":                 { "type": "integer" },
+        "uuid":                 { "type": "string", "format": "uuid" },
+        "alterId":              { "type": "integer" },
+        "cipher":               { "type": "string" },
+        "udp":                  { "type": "boolean" },
+        "network":              { "type": "string", "enum": ["ws","http","h2","grpc",""] },
+        "servername":           { "type": "string" },
+        "reality-opts":         { "$ref": "#/$defs/RealityOptions" },
+        "http-opts":            { "$ref": "#/$defs/HTTPOptions" },
+        "h2-opts":              { "$ref": "#/$defs/HTTP2Options" },
+        "grpc-opts":            { "$ref": "#/$defs/GrpcOptions" },
+        "ws-opts":              { "$ref": "#/$defs/WSOptions" },
+        "packet-addr":          { "type": "boolean" },
+        "xudp":                 { "type": "boolean" },
+        "packet-encoding":      { "type": "string" },
+        "global-padding":       { "type": "boolean" },
+        "authenticated-length": { "type": "boolean" }
+      }
+    },
+
+    "vless": {
+      "allOf": [{ "$ref": "#/$defs/_basic" }, { "$ref": "#/$defs/_tls" }],
+      "required": ["type","name","server","port","uuid"],
+      "properties": {
+        "type":            { "const": "vless" },
+        "name":            { "type": "string" },
+        "server":          { "type": "string" },
+        "port":            { "type": "integer" },
+        "uuid":            { "type": "string", "format": "uuid" },
+        "flow":            { "type": "string" },
+        "udp":             { "type": "boolean" },
+        "packet-addr":     { "type": "boolean" },
+        "xudp":            { "type": "boolean" },
+        "packet-encoding": { "type": "string" },
+        "encryption":      { "type": "string" },
+        "network":         { "type": "string", "enum": ["ws","http","h2","grpc","xhttp",""] },
+        "servername":      { "type": "string" },
+        "reality-opts":    { "$ref": "#/$defs/RealityOptions" },
+        "http-opts":       { "$ref": "#/$defs/HTTPOptions" },
+        "h2-opts":         { "$ref": "#/$defs/HTTP2Options" },
+        "grpc-opts":       { "$ref": "#/$defs/GrpcOptions" },
+        "ws-opts":         { "$ref": "#/$defs/WSOptions" },
+        "ws-headers":      { "type": "object", "additionalProperties": { "type": "string" } },
+        "xhttp-opts":      { "type": "object" }
+      }
+    },
+
+    "snell": {
+      "allOf": [{ "$ref": "#/$defs/_basic" }],
+      "required": ["type","name","server","port","psk"],
+      "properties": {
+        "type":      { "const": "snell" },
+        "name":      { "type": "string" },
+        "server":    { "type": "string" },
+        "port":      { "type": "integer" },
+        "psk":       { "type": "string" },
+        "udp":       { "type": "boolean" },
+        "version":   { "type": "integer" },
+        "obfs-opts": { "type": "object" }
+      }
+    },
+
+    "trojan": {
+      "allOf": [{ "$ref": "#/$defs/_basic" }, { "$ref": "#/$defs/_tls" }],
+      "required": ["type","name","server","port","password"],
+      "properties": {
+        "type":     { "const": "trojan" },
+        "name":     { "type": "string" },
+        "server":   { "type": "string" },
+        "port":     { "type": "integer" },
+        "password": { "type": "string" },
+        "udp":      { "type": "boolean" },
+        "network":  { "type": "string", "enum": ["ws","grpc",""] },
+        "reality-opts": { "$ref": "#/$defs/RealityOptions" },
+        "grpc-opts":    { "$ref": "#/$defs/GrpcOptions" },
+        "ws-opts":      { "$ref": "#/$defs/WSOptions" },
+        "ss-opts": {
+          "type": "object",
+          "properties": {
+            "enabled":  { "type": "boolean" },
+            "method":   { "type": "string" },
+            "password": { "type": "string" }
+          }
+        }
+      }
+    },
+
+    "hysteria": {
+      "allOf": [{ "$ref": "#/$defs/_basic" }, { "$ref": "#/$defs/_tls" }],
+      "required": ["type","name","server","up","down"],
+      "properties": {
+        "type":                  { "const": "hysteria" },
+        "name":                  { "type": "string" },
+        "server":                { "type": "string" },
+        "port":                  { "type": "integer" },
+        "ports":                 { "type": "string" },
+        "protocol":              { "type": "string" },
+        "up":                    { "type": "string" },
+        "down":                  { "type": "string" },
+        "auth":                  { "type": "string" },
+        "auth-str":              { "type": "string" },
+        "obfs":                  { "type": "string" },
+        "recv-window-conn":      { "type": "integer" },
+        "recv-window":           { "type": "integer" },
+        "disable-mtu-discovery": { "type": "boolean" },
+        "fast-open":             { "type": "boolean" },
+        "hop-interval":          { "type": "integer" }
+      }
+    },
+
+    "hysteria2": {
+      "allOf": [{ "$ref": "#/$defs/_basic" }, { "$ref": "#/$defs/_tls" }],
+      "required": ["type","name","server"],
+      "properties": {
+        "type":                             { "const": "hysteria2" },
+        "name":                             { "type": "string" },
+        "server":                           { "type": "string" },
+        "port":                             { "type": "integer" },
+        "ports":                            { "type": "string" },
+        "hop-interval":                     { "type": "string" },
+        "up":                               { "type": "string" },
+        "down":                             { "type": "string" },
+        "password":                         { "type": "string" },
+        "obfs":                             { "type": "string" },
+        "obfs-password":                    { "type": "string" },
+        "cwnd":                             { "type": "integer" },
+        "bbr-profile":                      { "type": "string" },
+        "udp-mtu":                          { "type": "integer" },
+        "initial-stream-receive-window":    { "type": "integer" },
+        "max-stream-receive-window":        { "type": "integer" },
+        "initial-connection-receive-window":{ "type": "integer" },
+        "max-connection-receive-window":    { "type": "integer" },
+        "realm-opts": {
+          "type": "object",
+          "properties": {
+            "enable":       { "type": "boolean" },
+            "server-url":   { "type": "string" },
+            "token":        { "type": "string" },
+            "realm-id":     { "type": "string" },
+            "stun-servers": { "type": "array", "items": { "type": "string" } },
+            "sni":              { "type": "string" },
+            "skip-cert-verify": { "type": "boolean" },
+            "fingerprint":      { "type": "string" },
+            "certificate":      { "type": "string" },
+            "private-key":      { "type": "string" },
+            "alpn":             { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    },
+
+    "wireguard": {
+      "allOf": [{ "$ref": "#/$defs/_basic" }],
+      "required": ["type","name","private-key"],
+      "properties": {
+        "type":                        { "const": "wireguard" },
+        "name":                        { "type": "string" },
+        "ip":                          { "type": "string" },
+        "ipv6":                        { "type": "string" },
+        "private-key":                 { "type": "string" },
+        "workers":                     { "type": "integer" },
+        "mtu":                         { "type": "integer" },
+        "udp":                         { "type": "boolean" },
+        "persistent-keepalive":        { "type": "integer" },
+        "remote-dns-resolve":          { "type": "boolean" },
+        "dns":                         { "type": "array", "items": { "type": "string" } },
+        "refresh-server-ip-interval":  { "type": "integer" },
+        "peers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "server":         { "type": "string" },
+              "port":           { "type": "integer" },
+              "public-key":     { "type": "string" },
+              "pre-shared-key": { "type": "string" },
+              "reserved":       { "type": "array", "items": { "type": "integer" } },
+              "allowed-ips":    { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        },
+        "amnezia-wg-option": {
+          "type": "object",
+          "properties": {
+            "jc":   { "type": "integer" },
+            "jmin": { "type": "integer" },
+            "jmax": { "type": "integer" },
+            "s1":   { "type": "integer" },
+            "s2":   { "type": "integer" }
+          }
+        }
+      }
+    },
+
+    "tuic": {
+      "allOf": [{ "$ref": "#/$defs/_basic" }, { "$ref": "#/$defs/_tls" }],
+      "required": ["type","name","server","port"],
+      "properties": {
+        "type":                    { "const": "tuic" },
+        "name":                    { "type": "string" },
+        "server":                  { "type": "string" },
+        "port":                    { "type": "integer" },
+        "token":                   { "type": "string" },
+        "uuid":                    { "type": "string", "format": "uuid" },
+        "password":                { "type": "string" },
+        "ip":                      { "type": "string" },
+        "heartbeat-interval":      { "type": "integer" },
+        "reduce-rtt":              { "type": "boolean" },
+        "request-timeout":         { "type": "integer" },
+        "udp-relay-mode":          { "type": "string", "enum": ["native","quic"] },
+        "congestion-controller":   { "type": "string" },
+        "disable-sni":             { "type": "boolean" },
+        "max-udp-relay-packet-size":{ "type": "integer" },
+        "fast-open":               { "type": "boolean" },
+        "max-open-streams":        { "type": "integer" },
+        "cwnd":                    { "type": "integer" },
+        "bbr-profile":             { "type": "string" },
+        "recv-window-conn":        { "type": "integer" },
+        "recv-window":             { "type": "integer" },
+        "disable-mtu-discovery":   { "type": "boolean" },
+        "max-datagram-frame-size": { "type": "integer" },
+        "udp-over-stream":         { "type": "boolean" },
+        "udp-over-stream-version": { "type": "integer" }
+      }
+    },
+
+    "ssh": {
+      "allOf": [{ "$ref": "#/$defs/_basic" }],
+      "required": ["type","name","server","port","username"],
+      "properties": {
+        "type":                  { "const": "ssh" },
+        "name":                  { "type": "string" },
+        "server":                { "type": "string" },
+        "port":                  { "type": "integer" },
+        "username":              { "type": "string" },
+        "password":              { "type": "string" },
+        "private-key":           { "type": "string" },
+        "private-key-passphrase":{ "type": "string" },
+        "host-key":              { "type": "array", "items": { "type": "string" } },
+        "host-key-algorithms":   { "type": "array", "items": { "type": "string" } }
+      }
+    },
+
+    "mieru": {
+      "allOf": [{ "$ref": "#/$defs/_basic" }],
+      "required": ["type","name","server","transport","username","password"],
+      "properties": {
+        "type":            { "const": "mieru" },
+        "name":            { "type": "string" },
+        "server":          { "type": "string" },
+        "port":            { "type": "integer" },
+        "port-range":      { "type": "string" },
+        "transport":       { "type": "string", "enum": ["TCP","UDP"] },
+        "udp":             { "type": "boolean" },
+        "username":        { "type": "string" },
+        "password":        { "type": "string" },
+        "multiplexing":    { "type": "string" },
+        "handshake-mode":  { "type": "string" },
+        "traffic-pattern": { "type": "string" }
+      }
+    },
+
+    "anytls": {
+      "allOf": [{ "$ref": "#/$defs/_basic" }, { "$ref": "#/$defs/_tls" }],
+      "required": ["type","name","server","port","password"],
+      "properties": {
+        "type":     { "const": "anytls" },
+        "name":     { "type": "string" },
+        "server":   { "type": "string" },
+        "port":     { "type": "integer" },
+        "password": { "type": "string" }
+      }
+    },
+
+    "direct": {
+      "allOf": [{ "$ref": "#/$defs/_basic" }],
+      "required": ["type","name"],
+      "properties": {
+        "type": { "const": "direct" },
+        "name": { "type": "string" }
+      }
+    },
+    "dns": {
+      "allOf": [{ "$ref": "#/$defs/_basic" }],
+      "required": ["type","name"],
+      "properties": {
+        "type": { "const": "dns" },
+        "name": { "type": "string" }
+      }
+    },
+    "reject": {
+      "allOf": [{ "$ref": "#/$defs/_basic" }],
+      "required": ["type","name"],
+      "properties": {
+        "type": { "const": "reject" },
+        "name": { "type": "string" }
+      }
+    }
+  }
+}

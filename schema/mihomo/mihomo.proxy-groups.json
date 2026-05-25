@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "proxy-groups",
+  "title": "proxy-groups",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["name", "type"],
+    "properties": {
+      "name":  { "type": "string" },
+      "type": {
+        "type": "string",
+        "enum": ["url-test", "fallback", "select", "load-balance"]
+      },
+
+      "proxies":              { "type": "array", "items": { "type": "string" } },
+      "use":                  { "type": "array", "items": { "type": "string" }, "description": "Proxy provider names" },
+
+      "include-all":           { "type": "boolean", "description": "Shorthand: include-all-proxies + include-all-providers" },
+      "include-all-proxies":   { "type": "boolean" },
+      "include-all-providers": { "type": "boolean" },
+
+      "filter":         { "type": "string", "description": "Regex on proxy names (backtick-separated for multiple)" },
+      "exclude-filter": { "type": "string" },
+      "exclude-type":   { "type": "string", "description": "Pipe-separated proxy types to exclude, e.g. \"ss|vmess\"" },
+
+      "url":      { "type": "string", "description": "Health check URL" },
+      "interval": { "type": "integer", "minimum": 0, "description": "Health check interval seconds. Auto-set to 300 when proxies present (non-select)" },
+      "timeout":  { "type": "integer", "minimum": 0, "description": "Health check timeout ms" },
+      "lazy":     { "type": "boolean", "default": true },
+
+      "expected-status": {
+        "type": "string",
+        "description": "HTTP status ranges considered healthy. e.g. \"200\", \"200/204\", \"200-299\". Default: \"*\""
+      },
+      "max-failed-times": { "type": "integer", "minimum": 0 },
+      "disable-udp":      { "type": "boolean" },
+      "hidden":           { "type": "boolean" },
+      "icon":             { "type": "string" },
+
+      "tolerance": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 65535,
+        "description": "url-test only. RTT ms tolerance before switching proxy"
+      },
+
+      "strategy": {
+        "type": "string",
+        "enum": ["consistent-hashing", "round-robin", "sticky-sessions"],
+        "default": "consistent-hashing",
+        "description": "load-balance only"
+      }
+    }
+  }
+}

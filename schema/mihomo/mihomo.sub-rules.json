@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sub-rules",
+  "title": "sub-rules",
+  "description": "Named rule sets usable as targets via SUB-RULE rule type. Circular references rejected at parse time.",
+  "type": "object",
+  "additionalProperties": {
+    "type": "array",
+    "items": {
+      "type": "string",
+      "description": "Rule string: \"TYPE,PAYLOAD,TARGET[,param...]\" — same format as top-level rules"
+    }
+  },
+  "propertyNames": {
+    "minLength": 1,
+    "description": "Sub-rule set name. Must be non-empty."
+  },
+  "examples": [
+    {
+      "my-sub": [
+        "DOMAIN-SUFFIX,example.com,DIRECT",
+        "GEOIP,CN,DIRECT",
+        "MATCH,PROXY"
+      ]
+    }
+  ]
+}

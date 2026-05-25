@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rule-providers",
+  "title": "rule-providers",
+  "description": "Map of named rule providers. Keys are provider names.",
+  "type": "object",
+  "additionalProperties": {
+    "type": "object",
+    "required": ["type", "behavior"],
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": ["file", "http", "inline"],
+        "description": "Vehicle type. \"inline\" uses payload field; no interval or URL needed"
+      },
+      "behavior": {
+        "type": "string",
+        "enum": ["domain", "ipcidr", "classical"]
+      },
+      "format": {
+        "type": "string",
+        "enum": ["yaml", "text", "mrs"],
+        "default": "yaml",
+        "description": "Rule file format. \"\" treated as yaml"
+      },
+      "path": {
+        "type": "string",
+        "description": "Local file path. Required for type=file. Optional override for type=http (must be within safe path)"
+      },
+      "url": {
+        "type": "string",
+        "description": "Remote URL. Required for type=http"
+      },
+      "proxy": {
+        "type": "string",
+        "description": "Proxy name used to fetch URL (type=http only)"
+      },
+      "header": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "description": "Extra HTTP request headers (type=http only)"
+      },
+      "interval": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "Auto-update interval seconds (type=http only)"
+      },
+      "size-limit": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "Max download size bytes (type=http only). 0 = unlimited"
+      },
+      "payload": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Inline rules (type=inline only)"
+      }
+    },
+    "allOf": [
+      {
+        "if": { "properties": { "type": { "const": "file" } } },
+        "then": { "required": ["path"] }
+      },
+      {
+        "if": { "properties": { "type": { "const": "http" } } },
+        "then": { "required": ["url"] }
+      },
+      {
+        "if": { "properties": { "type": { "const": "inline" } } },
+        "then": { "required": ["payload"] }
+      }
+    ]
+  }
+}

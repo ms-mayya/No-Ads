@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hosts",
+  "title": "hosts",
+  "description": "Static DNS overrides. Default includes localhost→127.0.0.1.",
+  "type": "object",
+  "additionalProperties": {
+    "oneOf": [
+      {
+        "type": "string",
+        "description": "Single IP, domain alias, or special value \"lan\" (resolves to non-loopback interface IPs at startup)"
+      },
+      {
+        "type": "array",
+        "items": { "type": "string" },
+        "minItems": 1,
+        "description": "Multiple IPs or domain aliases"
+      }
+    ]
+  },
+  "examples": [
+    {
+      "localhost": "127.0.0.1",
+      "example.com": ["1.2.3.4", "5.6.7.8"],
+      "alias.example.com": "example.com",
+      "myhost": "lan"
+    }
+  ]
+}

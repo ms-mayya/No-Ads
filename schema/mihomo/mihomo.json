@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "RawConfig",
+  "title": "RawConfig",
+  "type": "object",
+  "properties": {
+    "port":           { "type": "integer", "default": 0 },
+    "socks-port":     { "type": "integer", "default": 0 },
+    "redir-port":     { "type": "integer", "default": 0 },
+    "tproxy-port":    { "type": "integer", "default": 0 },
+    "mixed-port":     { "type": "integer", "default": 0 },
+    "ss-config":      { "type": "string",  "default": "" },
+    "vmess-config":   { "type": "string",  "default": "" },
+    "inbound-tfo":    { "type": "boolean", "default": false },
+    "inbound-mptcp":  { "type": "boolean", "default": false },
+    "authentication": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "skip-auth-prefixes": { "type": "array", "items": { "type": "string", "format": "cidr" }, "default": [] },
+    "lan-allowed-ips":    { "type": "array", "items": { "type": "string", "format": "cidr" }, "default": ["0.0.0.0/0", "::/0"] },
+    "lan-disallowed-ips": { "type": "array", "items": { "type": "string", "format": "cidr" }, "default": [] },
+    "allow-lan":      { "type": "boolean", "default": false },
+    "bind-address":   { "type": "string",  "default": "*" },
+    "mode":           { "type": "string", "enum": ["global", "rule", "direct"], "default": "rule" },
+    "unified-delay":  { "type": "boolean", "default": false },
+    "log-level":      { "type": "string", "enum": ["debug", "info", "warning", "error", "silent"], "default": "info" },
+    "ipv6":           { "type": "boolean", "default": true },
+    "external-controller":      { "type": "string", "default": "" },
+    "external-controller-pipe": { "type": "string", "default": "" },
+    "external-controller-unix": { "type": "string", "default": "" },
+    "external-controller-tls":  { "type": "string", "default": "" },
+    "external-controller-cors": {
+      "type": "object",
+      "properties": {
+        "allow-origins":         { "type": "array", "items": { "type": "string" }, "default": ["*"] },
+        "allow-private-network": { "type": "boolean", "default": true }
+      }
+    },
+    "external-ui":        { "type": "string", "default": "" },
+    "external-ui-url":    { "type": "string", "default": "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip" },
+    "external-ui-name":   { "type": "string", "default": "" },
+    "external-doh-server":{ "type": "string", "default": "" },
+    "secret":             { "type": "string", "default": "" },
+    "interface-name":     { "type": "string", "default": "" },
+    "routing-mark":       { "type": "integer", "default": 0 },
+    "tunnels": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          { "type": "string", "description": "Shorthand: \"tcp/udp,listen-addr,target-addr[,proxy]\"" },
+          {
+            "type": "object",
+            "required": ["network", "address", "target"],
+            "properties": {
+              "network": { "type": "array", "items": { "type": "string", "enum": ["tcp", "udp"] } },
+              "address": { "type": "string" },
+              "target":  { "type": "string" },
+              "proxy":   { "type": "string" }
+            }
+          }
+        ]
+      },
+      "default": []
+    },
+    "geo-auto-update":    { "type": "boolean", "default": false },
+    "geo-update-interval":{ "type": "integer", "default": 24 },
+    "geodata-mode":       { "type": "boolean", "default": false },
+    "geodata-loader":     { "type": "string",  "default": "memconservative" },
+    "geosite-matcher":    { "type": "string",  "default": "" },
+    "tcp-concurrent":     { "type": "boolean", "default": false },
+    "find-process-mode":  { "type": "string", "enum": ["strict", "always", "off"], "default": "strict" },
+    "global-client-fingerprint": { "type": "string", "default": "" },
+    "global-ua":          { "type": "string",  "default": "clash.meta/<version>" },
+    "etag-support":       { "type": "boolean", "default": true },
+    "keep-alive-idle":    { "type": "integer", "default": 0 },
+    "keep-alive-interval":{ "type": "integer", "default": 0 },
+    "disable-keep-alive": { "type": "boolean", "default": false },
+
+    "proxy-providers": { "$ref": "./mihomo.proxies.json" },
+    "rule-providers": { "$ref": "./mihomo.rule-providers.json" },
+    "proxies":      { "$ref": "./mihomo.proxies.json" },
+    "proxy-groups": { "$ref": "./mihomo.proxy-groups.json" },
+    "sub-rules": { "$ref": "./mihomo.sub-rules.json" },
+    "listeners": { "type": "array", "items": { "type": "object" } },
+    "hosts": { "$ref": "./mihomo.hosts.json" },
+
+    "dns": { "$ref": "./mihomo.dns.json" },
+
+    "ntp": {
+      "type": "object",
+      "properties": {
+        "enable":          { "type": "boolean", "default": false },
+        "server":          { "type": "string",  "default": "time.apple.com" },
+        "port":            { "type": "integer", "default": 123 },
+        "interval":        { "type": "integer", "default": 30 },
+        "dialer-proxy":    { "type": "string",  "default": "" },
+        "write-to-system": { "type": "boolean", "default": false }
+      }
+    },
+
+    "tun": { "$ref": "./mihomo.tun.json" },
+
+    "tuic-server": {
+      "type": "object",
+      "properties": {
+        "enable":                  { "type": "boolean", "default": false },
+        "listen":                  { "type": "string" },
+        "token":                   { "type": "array", "items": { "type": "string" } },
+        "users":                   { "type": "object", "additionalProperties": { "type": "string" } },
+        "certificate":             { "type": "string" },
+        "private-key":             { "type": "string" },
+        "congestion-controller":   { "type": "string" },
+        "max-idle-time":           { "type": "integer", "default": 15000 },
+        "authentication-timeout":  { "type": "integer", "default": 1000 },
+        "alpn":                    { "type": "array", "items": { "type": "string" }, "default": ["h3"] },
+        "max-udp-relay-packet-size": { "type": "integer", "default": 1500 },
+        "cwnd":                    { "type": "integer" }
+      }
+    },
+
+    "iptables": {
+      "type": "object",
+      "properties": {
+        "enable":            { "type": "boolean", "default": false },
+        "inbound-interface": { "type": "string",  "default": "lo" },
+        "bypass":            { "type": "array", "items": { "type": "string" }, "default": [] },
+        "dns-redirect":      { "type": "boolean", "default": true }
+      }
+    },
+
+    "experimental": {
+      "type": "object",
+      "properties": {
+        "fingerprints":          { "type": "array", "items": { "type": "string" } },
+        "quic-go-disable-gso":   { "type": "boolean", "default": false },
+        "quic-go-disable-ecn":   { "type": "boolean", "default": true },
+        "dialer-ip4p-convert":   { "type": "boolean", "default": false }
+      }
+    },
+
+    "profile": {
+      "type": "object",
+      "properties": {
+        "store-selected": { "type": "boolean", "default": true },
+        "store-fake-ip":  { "type": "boolean", "default": false }
+      }
+    },
+
+    "geox-url": {
+      "type": "object",
+      "properties": {
+        "geoip":   { "type": "string", "default": "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.dat" },
+        "mmdb":    { "type": "string", "default": "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.metadb" },
+        "asn":     { "type": "string", "default": "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb" },
+        "geosite": { "type": "string", "default": "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat" }
+      }
+    },
+
+    "sniffer": { "$ref": "./mihomo.sniffer.json" },
+
+    "tls": {
+      "type": "object",
+      "properties": {
+        "certificate":       { "type": "string" },
+        "private-key":       { "type": "string" },
+        "client-auth-type":  { "type": "string" },
+        "client-auth-cert":  { "type": "string" },
+        "ech-key":           { "type": "string" },
+        "custom-certifactes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+
+    "clash-for-android": {
+      "type": "object",
+      "properties": {
+        "append-system-dns":   { "type": "boolean", "default": false },
+        "ui-subtitle-pattern": { "type": "string",  "default": "" }
+      }
+    }
+  }
+}
