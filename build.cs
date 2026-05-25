@@ -109,6 +109,13 @@ string OpenClash()
     foreach (var (type, value, act) in rules)
         if (type is "DOMAIN-SUFFIX" or "DOMAIN-KEYWORD" or "PROCESS-NAME")
             sb.AppendLine($"  - {type},{value},{act}");
+    sb.AppendLine("""
+    +proxy-groups:
+      - name: PROXY
+        type: select
+        proxies:
+          - 🔰 节点选择
+    """);
     return sb.ToString();
 }
 
