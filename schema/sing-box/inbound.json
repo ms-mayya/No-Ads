@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./inbound.schema.json",
+  "title": "Inbound",
+  "$ref": "#/$defs/Inbound",
+  "$defs": {
+    "Inbound": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tag": {
+          "type": "string"
+        }
+      },
+      "unevaluatedProperties": true,
+      "description": "Tagged union. Exact payload depends on runtime inbound registry."
+    },
+
+    "ListenOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "listen": {
+          "$ref": "#/$defs/Addr"
+        },
+        "listen_port": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "bind_interface": {
+          "type": "string"
+        },
+        "routing_mark": {
+          "$ref": "#/$defs/FwMark"
+        },
+        "reuse_addr": {
+          "type": "boolean"
+        },
+        "netns": {
+          "type": "string"
+        },
+        "disable_tcp_keep_alive": {
+          "type": "boolean"
+        },
+        "tcp_keep_alive": {
+          "$ref": "#/$defs/Duration"
+        },
+        "tcp_keep_alive_interval": {
+          "$ref": "#/$defs/Duration"
+        },
+        "tcp_fast_open": {
+          "type": "boolean"
+        },
+        "tcp_multi_path": {
+          "type": "boolean"
+        },
+        "udp_fragment": {
+          "type": "boolean"
+        },
+        "udp_timeout": {
+          "$ref": "#/$defs/UDPTimeoutCompat"
+        },
+        "detour": {
+          "type": "string"
+        },
+        "proxy_protocol": {
+          "type": "boolean",
+          "description": "Deprecated: removed."
+        },
+        "proxy_protocol_accept_no_header": {
+          "type": "boolean",
+          "description": "Deprecated: removed."
+        },
+
+        "sniff": {
+          "type": "boolean",
+          "description": "Deprecated: legacy inbound field."
+        },
+        "sniff_override_destination": {
+          "type": "boolean",
+          "description": "Deprecated: legacy inbound field."
+        },
+        "sniff_timeout": {
+          "$ref": "#/$defs/Duration",
+          "description": "Deprecated: legacy inbound field."
+        },
+        "domain_strategy": {
+          "$ref": "#/$defs/DomainStrategy",
+          "description": "Deprecated: legacy inbound field."
+        },
+        "udp_disable_domain_unmapping": {
+          "type": "boolean",
+          "description": "Deprecated: legacy inbound field."
+        }
+      }
+    },
+
+    "InboundOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sniff": {
+          "type": "boolean",
+          "description": "Deprecated: use rule action instead."
+        },
+        "sniff_override_destination": {
+          "type": "boolean",
+          "description": "Deprecated: use rule action instead."
+        },
+        "sniff_timeout": {
+          "$ref": "#/$defs/Duration",
+          "description": "Deprecated: use rule action instead."
+        },
+        "domain_strategy": {
+          "$ref": "#/$defs/DomainStrategy",
+          "description": "Deprecated: use rule action instead."
+        },
+        "udp_disable_domain_unmapping": {
+          "type": "boolean",
+          "description": "Deprecated: use rule action instead."
+        }
+      }
+    },
+
+    "UDPTimeoutCompat": {
+      "description": "Accepts legacy integer seconds or duration value.",
+      "oneOf": [
+        {
+          "type": "integer",
+          "minimum": 0
+        },
+        {
+          "$ref": "#/$defs/Duration"
+        }
+      ]
+    },
+
+    "Addr": {
+      "description": "Placeholder for badoption.Addr.",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "null" }
+      ]
+    },
+
+    "FwMark": {
+      "description": "Placeholder for FwMark.",
+      "oneOf": [
+        { "type": "integer", "minimum": 0 },
+        { "type": "string" }
+      ]
+    },
+
+    "Duration": {
+      "description": "Placeholder for badoption.Duration.",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "integer", "minimum": 0 }
+      ]
+    },
+
+    "DomainStrategy": {
+      "description": "Placeholder for DomainStrategy.",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "null" }
+      ]
+    }
+  }
+}
