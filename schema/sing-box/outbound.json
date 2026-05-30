@@ -1,0 +1,364 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./outbound.schema.json",
+  "title": "Outbound",
+  "$ref": "#/$defs/Outbound",
+  "$defs": {
+    "Outbound": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "not": {
+            "const": "dns"
+          }
+        },
+        "tag": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "direct" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "$ref": "#/$defs/DirectOutboundOptions"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "block" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "$ref": "#/$defs/BlockOutboundOptions"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "socks" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "$ref": "#/$defs/SocksOutboundOptions"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "http" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "$ref": "#/$defs/HTTPOutboundOptions"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "shadowsocks" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "$ref": "#/$defs/ShadowsocksOutboundOptions"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "vmess" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "$ref": "#/$defs/VMessOutboundOptions"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "trojan" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "$ref": "#/$defs/TrojanOutboundOptions"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "wireguard" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "$ref": "#/$defs/WireGuardOutboundOptions"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "selector" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "$ref": "#/$defs/SelectorOutboundOptions"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "urltest" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "$ref": "#/$defs/URLTestOutboundOptions"
+          }
+        }
+      ],
+      "unevaluatedProperties": true
+    },
+
+    "DialerOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "detour": {
+          "type": "string"
+        },
+        "bind_interface": {
+          "type": "string"
+        },
+        "inet4_bind_address": {
+          "$ref": "#/$defs/Addr"
+        },
+        "inet6_bind_address": {
+          "$ref": "#/$defs/Addr"
+        },
+        "bind_address_no_port": {
+          "type": "boolean"
+        },
+        "protect_path": {
+          "type": "string"
+        },
+        "routing_mark": {
+          "$ref": "#/$defs/FwMark"
+        },
+        "reuse_addr": {
+          "type": "boolean"
+        },
+        "netns": {
+          "type": "string"
+        },
+        "connect_timeout": {
+          "$ref": "#/$defs/Duration"
+        },
+        "tcp_fast_open": {
+          "type": "boolean"
+        },
+        "tcp_multi_path": {
+          "type": "boolean"
+        },
+        "disable_tcp_keep_alive": {
+          "type": "boolean"
+        },
+        "tcp_keep_alive": {
+          "$ref": "#/$defs/Duration"
+        },
+        "tcp_keep_alive_interval": {
+          "$ref": "#/$defs/Duration"
+        },
+        "udp_fragment": {
+          "type": "boolean"
+        },
+        "domain_resolver": {
+          "$ref": "#/$defs/DomainResolveOptions"
+        },
+        "network_strategy": {
+          "$ref": "#/$defs/NetworkStrategy"
+        },
+        "network_type": {
+          "$ref": "#/$defs/ListableInterfaceType"
+        },
+        "fallback_network_type": {
+          "$ref": "#/$defs/ListableInterfaceType"
+        },
+        "fallback_delay": {
+          "$ref": "#/$defs/Duration"
+        },
+        "domain_strategy": {
+          "$ref": "#/$defs/DomainStrategy"
+        }
+      }
+    },
+
+    "DomainResolveOptions": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["server"],
+          "properties": {
+            "server": {
+              "type": "string",
+              "minLength": 1
+            },
+            "timeout": {
+              "$ref": "#/$defs/Duration"
+            },
+            "strategy": {
+              "$ref": "#/$defs/DomainStrategy"
+            },
+            "disable_cache": {
+              "type": "boolean"
+            },
+            "disable_optimistic_cache": {
+              "type": "boolean"
+            },
+            "rewrite_ttl": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            },
+            "client_subnet": {
+              "$ref": "#/$defs/Prefixable"
+            }
+          }
+        }
+      ]
+    },
+
+    "ServerOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["server", "server_port"],
+      "properties": {
+        "server": {
+          "type": "string"
+        },
+        "server_port": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535
+        }
+      }
+    },
+
+    "DirectOutboundOptions": {
+      "description": "Placeholder. Define from concrete direct outbound options type.",
+      "type": "object"
+    },
+    "BlockOutboundOptions": {
+      "description": "Placeholder. Define from concrete block outbound options type.",
+      "type": "object"
+    },
+    "SocksOutboundOptions": {
+      "description": "Placeholder. Usually composes ServerOptions + DialerOptions + auth fields.",
+      "type": "object"
+    },
+    "HTTPOutboundOptions": {
+      "description": "Placeholder. Define from concrete http outbound options type.",
+      "type": "object"
+    },
+    "ShadowsocksOutboundOptions": {
+      "description": "Placeholder. Define from concrete shadowsocks outbound options type.",
+      "type": "object"
+    },
+    "VMessOutboundOptions": {
+      "description": "Placeholder. Define from concrete vmess outbound options type.",
+      "type": "object"
+    },
+    "TrojanOutboundOptions": {
+      "description": "Placeholder. Define from concrete trojan outbound options type.",
+      "type": "object"
+    },
+    "WireGuardOutboundOptions": {
+      "description": "Placeholder. Define from concrete wireguard outbound options type.",
+      "type": "object"
+    },
+    "SelectorOutboundOptions": {
+      "description": "Placeholder. Define from concrete selector outbound options type.",
+      "type": "object"
+    },
+    "URLTestOutboundOptions": {
+      "description": "Placeholder. Define from concrete urltest outbound options type.",
+      "type": "object"
+    },
+
+    "Addr": {
+      "description": "Placeholder for badoption.Addr.",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "null" }
+      ]
+    },
+    "Duration": {
+      "description": "Placeholder for badoption.Duration.",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "integer", "minimum": 0 }
+      ]
+    },
+    "FwMark": {
+      "description": "Placeholder for FwMark.",
+      "oneOf": [
+        { "type": "integer", "minimum": 0 },
+        { "type": "string" }
+      ]
+    },
+    "Prefixable": {
+      "description": "Placeholder for badoption.Prefixable.",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "object" },
+        { "type": "null" }
+      ]
+    },
+    "NetworkStrategy": {
+      "description": "Placeholder for NetworkStrategy.",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "null" }
+      ]
+    },
+    "DomainStrategy": {
+      "description": "Placeholder for DomainStrategy.",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "null" }
+      ]
+    },
+    "ListableInterfaceType": {
+      "description": "Placeholder for badoption.Listable[InterfaceType].",
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  }
+}
