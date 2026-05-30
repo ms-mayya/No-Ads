@@ -1,0 +1,485 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./rule-action.schema.json",
+  "title": "RuleAction",
+  "$ref": "#/$defs/RuleAction",
+  "$defs": {
+    "RuleAction": {
+      "oneOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "not": { "required": ["action"] }
+            },
+            {
+              "$ref": "#/$defs/RouteActionOptions"
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "action": { "const": "route" }
+              },
+              "required": ["action"]
+            },
+            {
+              "$ref": "#/$defs/RouteActionOptions"
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "action": { "const": "route-options" }
+              },
+              "required": ["action"]
+            },
+            {
+              "$ref": "#/$defs/RouteOptionsActionOptions"
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "action": { "const": "direct" }
+              },
+              "required": ["action"]
+            },
+            {
+              "$ref": "#/$defs/DirectActionOptions"
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "action": { "const": "bypass" }
+              },
+              "required": ["action"]
+            },
+            {
+              "$ref": "#/$defs/RouteActionOptions"
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "action": { "const": "reject" }
+              },
+              "required": ["action"]
+            },
+            {
+              "$ref": "#/$defs/RejectActionOptions"
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "action": { "const": "hijack-dns" }
+          },
+          "required": ["action"],
+          "additionalProperties": false
+        },
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "action": { "const": "sniff" }
+              },
+              "required": ["action"]
+            },
+            {
+              "$ref": "#/$defs/RouteActionSniff"
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "action": { "const": "resolve" }
+              },
+              "required": ["action"]
+            },
+            {
+              "$ref": "#/$defs/RouteActionResolve"
+            }
+          ]
+        }
+      ]
+    },
+
+    "DNSRuleAction": {
+      "oneOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "not": { "required": ["action"] }
+            },
+            {
+              "$ref": "#/$defs/DNSRouteActionOptions"
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "action": { "const": "route" }
+              },
+              "required": ["action"]
+            },
+            {
+              "$ref": "#/$defs/DNSRouteActionOptions"
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "action": { "const": "evaluate" }
+              },
+              "required": ["action"]
+            },
+            {
+              "$ref": "#/$defs/DNSRouteActionOptions"
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "action": { "const": "respond" }
+          },
+          "required": ["action"],
+          "additionalProperties": false
+        },
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "action": { "const": "route-options" }
+              },
+              "required": ["action"]
+            },
+            {
+              "$ref": "#/$defs/DNSRouteOptionsActionOptions"
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "action": { "const": "reject" }
+              },
+              "required": ["action"]
+            },
+            {
+              "$ref": "#/$defs/RejectActionOptions"
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "action": { "const": "predefined" }
+              },
+              "required": ["action"]
+            },
+            {
+              "$ref": "#/$defs/DNSRouteActionPredefined"
+            }
+          ]
+        }
+      ]
+    },
+
+    "RouteActionOptions": {
+      "type": "object",
+      "properties": {
+        "outbound": { "type": "string" },
+        "override_address": { "type": "string" },
+        "override_port": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "network_strategy": { "$ref": "#/$defs/NetworkStrategy" },
+        "fallback_delay": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "udp_disable_domain_unmapping": { "type": "boolean" },
+        "udp_connect": { "type": "boolean" },
+        "udp_timeout": { "$ref": "#/$defs/Duration" },
+        "tls_fragment": { "type": "boolean" },
+        "tls_fragment_fallback_delay": { "$ref": "#/$defs/Duration" },
+        "tls_record_fragment": { "type": "boolean" },
+        "tls_spoof": { "type": "string" },
+        "tls_spoof_method": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "RouteOptionsActionOptions": {
+      "type": "object",
+      "properties": {
+        "override_address": { "type": "string" },
+        "override_port": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "network_strategy": { "$ref": "#/$defs/NetworkStrategy" },
+        "fallback_delay": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "udp_disable_domain_unmapping": { "type": "boolean" },
+        "udp_connect": { "type": "boolean" },
+        "udp_timeout": { "$ref": "#/$defs/Duration" },
+        "tls_fragment": { "type": "boolean" },
+        "tls_fragment_fallback_delay": { "$ref": "#/$defs/Duration" },
+        "tls_record_fragment": { "type": "boolean" },
+        "tls_spoof": { "type": "string" },
+        "tls_spoof_method": { "type": "string" }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "not": {
+            "allOf": [
+              {
+                "properties": {
+                  "tls_fragment": { "const": true }
+                },
+                "required": ["tls_fragment"]
+              },
+              {
+                "properties": {
+                  "tls_record_fragment": { "const": true }
+                },
+                "required": ["tls_record_fragment"]
+              }
+            ]
+          }
+        }
+      ],
+      "description": "Runtime rejects empty object and forbids both tls_fragment and tls_record_fragment being true."
+    },
+
+    "DNSRouteActionOptions": {
+      "type": "object",
+      "properties": {
+        "server": { "type": "string" },
+        "timeout": { "$ref": "#/$defs/Duration" },
+        "strategy": { "$ref": "#/$defs/DomainStrategy" },
+        "disable_cache": { "type": "boolean" },
+        "disable_optimistic_cache": { "type": "boolean" },
+        "rewrite_ttl": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "client_subnet": { "$ref": "#/$defs/Prefixable" }
+      },
+      "additionalProperties": false
+    },
+
+    "DNSRouteOptionsActionOptions": {
+      "type": "object",
+      "properties": {
+        "strategy": { "$ref": "#/$defs/DomainStrategy" },
+        "timeout": { "$ref": "#/$defs/Duration" },
+        "disable_cache": { "type": "boolean" },
+        "disable_optimistic_cache": { "type": "boolean" },
+        "rewrite_ttl": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "client_subnet": { "$ref": "#/$defs/Prefixable" }
+      },
+      "additionalProperties": false,
+      "description": "Runtime rejects empty object."
+    },
+
+    "DirectActionOptions": {
+      "allOf": [
+        { "$ref": "#/$defs/DialerOptions" },
+        {
+          "not": {
+            "properties": {
+              "detour": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": ["detour"]
+          }
+        }
+      ],
+      "description": "Same shape as DialerOptions, but runtime rejects detour."
+    },
+
+    "RejectActionOptions": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": ["default", "drop", "reply"]
+        },
+        "no_drop": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Runtime defaults empty method to default. no_drop invalid when method=drop."
+    },
+
+    "RouteActionSniff": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sniffer": {
+          "$ref": "#/$defs/ListableString"
+        },
+        "timeout": {
+          "$ref": "#/$defs/Duration"
+        }
+      }
+    },
+
+    "RouteActionResolve": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "server": { "type": "string" },
+        "timeout": { "$ref": "#/$defs/Duration" },
+        "strategy": { "$ref": "#/$defs/DomainStrategy" },
+        "disable_cache": { "type": "boolean" },
+        "disable_optimistic_cache": { "type": "boolean" },
+        "rewrite_ttl": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "client_subnet": { "$ref": "#/$defs/Prefixable" }
+      }
+    },
+
+    "DNSRouteActionPredefined": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "rcode": {
+          "$ref": "#/$defs/DNSRCode"
+        },
+        "answer": {
+          "$ref": "#/$defs/ListableDNSRecordOptions"
+        },
+        "ns": {
+          "$ref": "#/$defs/ListableDNSRecordOptions"
+        },
+        "extra": {
+          "$ref": "#/$defs/ListableDNSRecordOptions"
+        }
+      }
+    },
+
+    "DialerOptions": {
+      "description": "Reuse exact DialerOptions schema if available.",
+      "type": "object"
+    },
+
+    "ListableString": {
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      ]
+    },
+
+    "ListableDNSRecordOptions": {
+      "oneOf": [
+        { "$ref": "#/$defs/DNSRecordOptions" },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DNSRecordOptions"
+          }
+        }
+      ]
+    },
+
+    "NetworkStrategy": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "null" }
+      ]
+    },
+
+    "DomainStrategy": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "null" }
+      ]
+    },
+
+    "Prefixable": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "object" },
+        { "type": "null" }
+      ]
+    },
+
+    "Duration": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "integer", "minimum": 0 }
+      ]
+    },
+
+    "DNSRCode": {
+      "description": "Placeholder for DNSRCode.",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "integer" }
+      ]
+    },
+
+    "DNSRecordOptions": {
+      "description": "Placeholder for DNSRecordOptions.",
+      "type": "object"
+    }
+  }
+}
