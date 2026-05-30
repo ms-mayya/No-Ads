@@ -25,18 +25,12 @@ rules:
   # 微信小程序/豪云社区
   - DOMAIN-SUFFIX,ksedt.com,REJECT
   - DOMAIN-SUFFIX,ctobsnssdk.com,REJECT
-  - DOMAIN-KEYWORD,toutiao,REJECT
-  - DOMAIN-KEYWORD,kuaishou,REJECT
-  - DOMAIN-KEYWORD,douyin,REJECT
   - DOMAIN-SUFFIX,adukwai.com,REJECT
   - DOMAIN-SUFFIX,mtyun.com,REJECT
-  # - DOMAIN-SUFFIX,maoyan.com,REJECT
-  # - DOMAIN-SUFFIX,dianping.com,REJECT
   - DOMAIN-SUFFIX,c-ztuni.tec73.com,REJECT
   - DOMAIN-SUFFIX,kuaishouzt.com,REJECT
   - DOMAIN-SUFFIX,dreport.meituan.net,REJECT
   - DOMAIN-SUFFIX,sankuai.com,REJECT
-  - DOMAIN-SUFFIX,shifen.com,REJECT
   - DOMAIN-SUFFIX,tdnsv5.com,REJECT
   - DOMAIN-SUFFIX,wsdvs.com,REJECT
 
@@ -48,9 +42,6 @@ rules:
   - DOMAIN-SUFFIX,bugly.qq.com,REJECT
 
   # 直连域名
-  - DOMAIN-SUFFIX,teams.cdn.live.net,DIRECT
-  - DOMAIN-SUFFIX,teams.cdn.live.com,DIRECT
-  - DOMAIN-SUFFIX,teams.live.com,DIRECT
   - DOMAIN-SUFFIX,gouptech.com.tw,DIRECT
   - DOMAIN-SUFFIX,gouptech.com,DIRECT
 
