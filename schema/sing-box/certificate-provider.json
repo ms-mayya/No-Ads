@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./certificate-provider-options.schema.json",
+  "title": "CertificateProviderOptions",
+  "$ref": "#/$defs/CertificateProviderOptions",
+  "$defs": {
+    "CertificateProviderOptions": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "description": "Reference shared certificate provider by tag."
+        },
+        {
+          "$ref": "#/$defs/CertificateProviderInlineOptions"
+        }
+      ]
+    },
+
+    "CertificateProvider": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tag": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "type": { "const": "acme" } },
+            "required": ["type"]
+          },
+          "then": {
+            "$ref": "#/$defs/ACMECertificateProviderOptions"
+          }
+        }
+      ],
+      "unevaluatedProperties": true,
+      "description": "Top-level certificate provider object. Exact inline fields depend on provider type registry."
+    },
+
+    "CertificateProviderInlineOptions": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "type": { "const": "acme" } },
+            "required": ["type"]
+          },
+          "then": {
+            "$ref": "#/$defs/ACMECertificateProviderOptions"
+          }
+        }
+      ],
+      "unevaluatedProperties": true,
+      "description": "Inline certificate provider config. Exact fields depend on provider type registry."
+    },
+
+    "ACMECertificateProviderOptions": {
+      "description": "Placeholder. Define from concrete ACME provider option struct if needed.",
+      "type": "object"
+    }
+  }
+}
