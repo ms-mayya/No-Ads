@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./ntp.schema.json",
+  "title": "NTPOptions",
+  "$ref": "#/$defs/NTPOptions",
+  "$defs": {
+    "NTPOptions": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "interval": {
+          "$ref": "#/$defs/Duration"
+        },
+        "write_to_system": {
+          "type": "boolean"
+        },
+        "server": {
+          "type": "string"
+        },
+        "server_port": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535
+        }
+      },
+      "allOf": [
+        { "$ref": "#/$defs/DialerOptions" }
+      ],
+      "unevaluatedProperties": true
+    },
+
+    "DialerOptions": {
+      "description": "Reuse exact DialerOptions definition from outbound/service schema.",
+      "type": "object"
+    },
+
+    "Duration": {
+      "description": "Placeholder for badoption.Duration.",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "integer", "minimum": 0 }
+      ]
+    }
+  }
+}
