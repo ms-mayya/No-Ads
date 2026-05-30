@@ -1,69 +1,625 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "./route.json",
+  "$id": "./route.schema.json",
   "title": "RouteOptions",
-  "type": "object",
-  "additionalProperties": false,
-  "properties": {
-    "geoip": {
-      "$ref": "./geoip.json"
-    },
-    "geosite": {
-      "$ref": "./geosite.json"
-    },
-    "rules": {
-      "type": "array",
-      "items": {
-        "$ref": "./rule.json"
+  "$ref": "#/$defs/RouteOptions",
+  "$defs": {
+    "RouteOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "geoip": {
+          "$ref": "#/$defs/GeoIPOptions"
+        },
+        "geosite": {
+          "$ref": "#/$defs/GeositeOptions"
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Rule"
+          }
+        },
+        "rule_set": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RuleSet"
+          }
+        },
+        "final": {
+          "type": "string"
+        },
+        "find_process": {
+          "type": "boolean"
+        },
+        "find_neighbor": {
+          "type": "boolean"
+        },
+        "dhcp_lease_files": {
+          "$ref": "#/$defs/ListableString"
+        },
+        "auto_detect_interface": {
+          "type": "boolean"
+        },
+        "override_android_vpn": {
+          "type": "boolean"
+        },
+        "default_interface": {
+          "type": "string"
+        },
+        "default_mark": {
+          "$ref": "#/$defs/FwMark"
+        },
+        "default_domain_resolver": {
+          "$ref": "#/$defs/DomainResolveOptions"
+        },
+        "default_network_strategy": {
+          "$ref": "#/$defs/NetworkStrategy"
+        },
+        "default_network_type": {
+          "$ref": "#/$defs/ListableInterfaceType"
+        },
+        "default_fallback_network_type": {
+          "$ref": "#/$defs/ListableInterfaceType"
+        },
+        "default_fallback_delay": {
+          "$ref": "#/$defs/Duration"
+        },
+        "default_http_client": {
+          "type": "string"
+        }
       }
     },
-    "rule_set": {
-      "type": "array",
-      "items": {
-        "$ref": "./rule-set.json"
+
+    "GeoIPOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "path": { "type": "string" },
+        "download_url": { "type": "string" },
+        "download_detour": { "type": "string" }
       }
     },
-    "final": {
-      "type": "string"
+
+    "GeositeOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "path": { "type": "string" },
+        "download_url": { "type": "string" },
+        "download_detour": { "type": "string" }
+      }
     },
-    "find_process": {
-      "type": "boolean"
+
+    "Rule": {
+      "oneOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": ["default"]
+                }
+              }
+            },
+            {
+              "$ref": "#/$defs/DefaultRule"
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": ["logical"]
+                }
+              },
+              "required": ["type"]
+            },
+            {
+              "$ref": "#/$defs/LogicalRule"
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "not": {
+                "required": ["type"]
+              }
+            },
+            {
+              "$ref": "#/$defs/DefaultRule"
+            }
+          ]
+        }
+      ]
     },
-    "find_neighbor": {
-      "type": "boolean"
+
+    "DefaultRule": {
+      "type": "object",
+      "properties": {
+        "inbound": { "$ref": "#/$defs/ListableString" },
+        "ip_version": { "type": "integer" },
+        "network": { "$ref": "#/$defs/ListableString" },
+        "auth_user": { "$ref": "#/$defs/ListableString" },
+        "protocol": { "$ref": "#/$defs/ListableString" },
+        "client": { "$ref": "#/$defs/ListableString" },
+        "domain": { "$ref": "#/$defs/ListableString" },
+        "domain_suffix": { "$ref": "#/$defs/ListableString" },
+        "domain_keyword": { "$ref": "#/$defs/ListableString" },
+        "domain_regex": { "$ref": "#/$defs/ListableString" },
+        "geosite": { "$ref": "#/$defs/ListableString" },
+        "source_geoip": { "$ref": "#/$defs/ListableString" },
+        "geoip": { "$ref": "#/$defs/ListableString" },
+        "source_ip_cidr": { "$ref": "#/$defs/ListableString" },
+        "source_ip_is_private": { "type": "boolean" },
+        "ip_cidr": { "$ref": "#/$defs/ListableString" },
+        "ip_is_private": { "type": "boolean" },
+        "source_port": { "$ref": "#/$defs/ListableUint16" },
+        "source_port_range": { "$ref": "#/$defs/ListableString" },
+        "port": { "$ref": "#/$defs/ListableUint16" },
+        "port_range": { "$ref": "#/$defs/ListableString" },
+        "process_name": { "$ref": "#/$defs/ListableString" },
+        "process_path": { "$ref": "#/$defs/ListableString" },
+        "process_path_regex": { "$ref": "#/$defs/ListableString" },
+        "package_name": { "$ref": "#/$defs/ListableString" },
+        "package_name_regex": { "$ref": "#/$defs/ListableString" },
+        "user": { "$ref": "#/$defs/ListableString" },
+        "user_id": { "$ref": "#/$defs/ListableInt32" },
+        "clash_mode": { "type": "string" },
+        "network_type": { "$ref": "#/$defs/ListableInterfaceType" },
+        "network_is_expensive": { "type": "boolean" },
+        "network_is_constrained": { "type": "boolean" },
+        "wifi_ssid": { "$ref": "#/$defs/ListableString" },
+        "wifi_bssid": { "$ref": "#/$defs/ListableString" },
+        "interface_address": {
+          "$ref": "#/$defs/TypedMapStringToListablePrefixable"
+        },
+        "network_interface_address": {
+          "$ref": "#/$defs/TypedMapInterfaceTypeToListablePrefixable"
+        },
+        "default_interface_address": {
+          "$ref": "#/$defs/ListablePrefixable"
+        },
+        "source_mac_address": { "$ref": "#/$defs/ListableString" },
+        "source_hostname": { "$ref": "#/$defs/ListableString" },
+        "preferred_by": { "$ref": "#/$defs/ListableString" },
+        "rule_set": { "$ref": "#/$defs/ListableString" },
+        "rule_set_ip_cidr_match_source": { "type": "boolean" },
+        "rule_set_ipcidr_match_source": {
+          "type": "boolean",
+          "description": "Deprecated alias of rule_set_ip_cidr_match_source."
+        },
+        "invert": { "type": "boolean" }
+      },
+      "allOf": [
+        { "$ref": "#/$defs/RuleAction" }
+      ],
+      "unevaluatedProperties": true
     },
-    "dhcp_lease_files": {
-      "$ref": "./listable-string.json"
+
+    "LogicalRule": {
+      "type": "object",
+      "required": ["mode"],
+      "properties": {
+        "mode": {
+          "type": "string"
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Rule"
+          }
+        },
+        "invert": {
+          "type": "boolean"
+        }
+      },
+      "allOf": [
+        { "$ref": "#/$defs/RuleAction" }
+      ],
+      "unevaluatedProperties": true
     },
-    "auto_detect_interface": {
-      "type": "boolean"
+
+    "RuleSet": {
+      "oneOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": ["local"]
+                }
+              },
+              "required": ["type", "tag"]
+            },
+            {
+              "$ref": "#/$defs/LocalRuleSetObject"
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": ["remote"]
+                }
+              },
+              "required": ["type", "tag"]
+            },
+            {
+              "$ref": "#/$defs/RemoteRuleSetObject"
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": ["tag"],
+              "properties": {
+                "type": {
+                  "enum": ["inline"]
+                }
+              }
+            },
+            {
+              "$ref": "#/$defs/InlineRuleSetObject"
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "required": ["tag"],
+              "not": {
+                "required": ["type"]
+              }
+            },
+            {
+              "$ref": "#/$defs/InlineRuleSetObject"
+            }
+          ]
+        }
+      ]
     },
-    "override_android_vpn": {
-      "type": "boolean"
+
+    "InlineRuleSetObject": {
+      "type": "object",
+      "required": ["tag"],
+      "properties": {
+        "tag": { "type": "string", "minLength": 1 },
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/HeadlessRule"
+          }
+        }
+      },
+      "additionalProperties": false
     },
-    "default_interface": {
-      "type": "string"
+
+    "LocalRuleSetObject": {
+      "type": "object",
+      "required": ["tag"],
+      "properties": {
+        "type": { "const": "local" },
+        "tag": { "type": "string", "minLength": 1 },
+        "format": {
+          "type": "string",
+          "enum": ["source", "binary"]
+        },
+        "path": { "type": "string" }
+      },
+      "additionalProperties": false
     },
-    "default_mark": {
-      "$ref": "./fwmark.json"
+
+    "RemoteRuleSetObject": {
+      "type": "object",
+      "required": ["tag", "url"],
+      "properties": {
+        "type": { "const": "remote" },
+        "tag": { "type": "string", "minLength": 1 },
+        "format": {
+          "type": "string",
+          "enum": ["source", "binary"]
+        },
+        "url": { "type": "string" },
+        "http_client": {
+          "$ref": "#/$defs/HTTPClientOptions"
+        },
+        "update_interval": {
+          "$ref": "#/$defs/Duration"
+        },
+        "download_detour": {
+          "type": "string",
+          "description": "Deprecated: use http_client instead."
+        }
+      },
+      "additionalProperties": false
     },
-    "default_domain_resolver": {
-      "$ref": "./domain-resolve-options.json"
+
+    "HeadlessRule": {
+      "oneOf": [
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": ["default"]
+                }
+              }
+            },
+            {
+              "$ref": "#/$defs/DefaultHeadlessRule"
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": ["logical"]
+                }
+              },
+              "required": ["type"]
+            },
+            {
+              "$ref": "#/$defs/LogicalHeadlessRule"
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "type": "object",
+              "not": {
+                "required": ["type"]
+              }
+            },
+            {
+              "$ref": "#/$defs/DefaultHeadlessRule"
+            }
+          ]
+        }
+      ]
     },
-    "default_network_strategy": {
-      "$ref": "./network-strategy.json"
+
+    "DefaultHeadlessRule": {
+      "type": "object",
+      "properties": {
+        "query_type": { "$ref": "#/$defs/ListableDNSQueryType" },
+        "network": { "$ref": "#/$defs/ListableString" },
+        "domain": { "$ref": "#/$defs/ListableString" },
+        "domain_suffix": { "$ref": "#/$defs/ListableString" },
+        "domain_keyword": { "$ref": "#/$defs/ListableString" },
+        "domain_regex": { "$ref": "#/$defs/ListableString" },
+        "source_ip_cidr": { "$ref": "#/$defs/ListableString" },
+        "ip_cidr": { "$ref": "#/$defs/ListableString" },
+        "source_port": { "$ref": "#/$defs/ListableUint16" },
+        "source_port_range": { "$ref": "#/$defs/ListableString" },
+        "port": { "$ref": "#/$defs/ListableUint16" },
+        "port_range": { "$ref": "#/$defs/ListableString" },
+        "process_name": { "$ref": "#/$defs/ListableString" },
+        "process_path": { "$ref": "#/$defs/ListableString" },
+        "process_path_regex": { "$ref": "#/$defs/ListableString" },
+        "package_name": { "$ref": "#/$defs/ListableString" },
+        "package_name_regex": { "$ref": "#/$defs/ListableString" },
+        "network_type": { "$ref": "#/$defs/ListableInterfaceType" },
+        "network_is_expensive": { "type": "boolean" },
+        "network_is_constrained": { "type": "boolean" },
+        "wifi_ssid": { "$ref": "#/$defs/ListableString" },
+        "wifi_bssid": { "$ref": "#/$defs/ListableString" },
+        "network_interface_address": {
+          "$ref": "#/$defs/TypedMapInterfaceTypeToListablePrefixable"
+        },
+        "default_interface_address": {
+          "$ref": "#/$defs/ListablePrefixable"
+        },
+        "invert": { "type": "boolean" }
+      },
+      "additionalProperties": false
     },
-    "default_network_type": {
-      "$ref": "./listable-interface-type.json"
+
+    "LogicalHeadlessRule": {
+      "type": "object",
+      "required": ["mode"],
+      "properties": {
+        "mode": { "type": "string" },
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/HeadlessRule"
+          }
+        },
+        "invert": { "type": "boolean" }
+      },
+      "additionalProperties": false
     },
-    "default_fallback_network_type": {
-      "$ref": "./listable-interface-type.json"
+
+    "HTTPClientOptions": {
+      "description": "Reuse exact HTTPClientOptions schema if available.",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "object" }
+      ]
     },
-    "default_fallback_delay": {
-      "$ref": "./duration.json"
+
+    "RuleAction": {
+      "description": "Placeholder. RuleAction fields come from separate action definitions.",
+      "type": "object"
     },
-    "default_http_client": {
-      "type": "string"
+
+    "ListableString": {
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      ]
+    },
+
+    "ListableUint16": {
+      "oneOf": [
+        {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 65535
+          }
+        }
+      ]
+    },
+
+    "ListableInt32": {
+      "oneOf": [
+        {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          }
+        }
+      ]
+    },
+
+    "ListableInterfaceType": {
+      "oneOf": [
+        { "$ref": "#/$defs/InterfaceType" },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/InterfaceType"
+          }
+        }
+      ]
+    },
+
+    "ListableDNSQueryType": {
+      "oneOf": [
+        { "$ref": "#/$defs/DNSQueryType" },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DNSQueryType"
+          }
+        }
+      ]
+    },
+
+    "ListablePrefixable": {
+      "oneOf": [
+        { "$ref": "#/$defs/Prefixable" },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Prefixable"
+          }
+        }
+      ]
+    },
+
+    "TypedMapStringToListablePrefixable": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/ListablePrefixable"
+      }
+    },
+
+    "TypedMapInterfaceTypeToListablePrefixable": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/ListablePrefixable"
+      }
+    },
+
+    "PlainRuleSet": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/HeadlessRule"
+          }
+        }
+      }
+    },
+
+    "FwMark": {
+      "oneOf": [
+        { "type": "integer", "minimum": 0 },
+        { "type": "string" }
+      ]
+    },
+
+    "DomainResolveOptions": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "object" },
+        { "type": "null" }
+      ]
+    },
+
+    "NetworkStrategy": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "null" }
+      ]
+    },
+
+    "InterfaceType": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "integer" }
+      ]
+    },
+
+    "DNSQueryType": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "integer" }
+      ]
+    },
+
+    "Prefixable": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "object" },
+        { "type": "null" }
+      ]
+    },
+
+    "Duration": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "integer", "minimum": 0 }
+      ]
     }
   }
 }
