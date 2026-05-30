@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./options.json",
+  "title": "Options",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "log": {
+      "$ref": "./log.json"
+    },
+    "dns": {
+      "$ref": "./dns.json"
+    },
+    "ntp": {
+      "$ref": "./ntp.json"
+    },
+    "certificate": {
+      "$ref": "./certificate.json"
+    },
+    "certificate_providers": {
+      "type": "array",
+      "items": {
+        "$ref": "./certificate-provider.json"
+      }
+    },
+    "http_clients": {
+      "type": "array",
+      "items": {
+        "$ref": "./http-client.json"
+      }
+    },
+    "endpoints": {
+      "type": "array",
+      "items": {
+        "$ref": "./endpoint.json"
+      }
+    },
+    "inbounds": {
+      "type": "array",
+      "items": {
+        "$ref": "./inbound.json"
+      }
+    },
+    "outbounds": {
+      "type": "array",
+      "items": {
+        "$ref": "./outbound.json"
+      }
+    },
+    "route": {
+      "$ref": "./route.json"
+    },
+    "services": {
+      "type": "array",
+      "items": {
+        "$ref": "./service.json"
+      }
+    },
+    "experimental": {
+      "$ref": "./experimental.json"
+    }
+  }
+}
