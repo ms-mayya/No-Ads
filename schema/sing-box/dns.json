@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/raw-dns-options.schema.json",
+  "title": "RawDNSOptions",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "servers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/DNSServerOptions"
+      }
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/DNSRule"
+      }
+    },
+    "final": {
+      "type": "string"
+    },
+    "reverse_mapping": {
+      "type": "boolean"
+    },
+    "strategy": {
+      "$ref": "#/$defs/DomainStrategy"
+    },
+    "timeout": {
+      "$ref": "#/$defs/Duration"
+    },
+    "disable_cache": {
+      "type": "boolean"
+    },
+    "disable_expire": {
+      "type": "boolean"
+    },
+    "independent_cache": {
+      "type": "boolean"
+    },
+    "cache_capacity": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "optimistic": {
+      "$ref": "#/$defs/OptimisticDNSOptions"
+    },
+    "client_subnet": {
+      "$ref": "#/$defs/Prefixable"
+    }
+  },
+  "$defs": {
+    "DNSServerOptions": {
+      "type": "object",
+      "description": "Transport-specific DNS server option object. Shape depends on `type`.",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        }
+      },
+      "required": [],
+      "additionalProperties": true
+    },
+    "DNSRule": {
+      "description": "Placeholder. Define from actual `DNSRule` Go type.",
+      "type": "object"
+    },
+    "DomainStrategy": {
+      "description": "Placeholder. Usually string enum in sing-box. Define from actual `DomainStrategy` Go type.",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "null" }
+      ]
+    },
+    "Duration": {
+      "description": "Placeholder for badoption.Duration. Often duration string like `5s`.",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "integer", "minimum": 0 }
+      ]
+    },
+    "OptimisticDNSOptions": {
+      "description": "Can unmarshal from boolean or object.",
+      "oneOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "timeout": {
+              "$ref": "#/$defs/Duration"
+            }
+          }
+        }
+      ]
+    },
+    "Prefixable": {
+      "description": "Placeholder for badoption.Prefixable. Usually CIDR string/object wrapper depending on implementation.",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "object" },
+        { "type": "null" }
+      ]
+    }
+  }
+}
