@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./experimental.schema.json",
+  "title": "ExperimentalOptions",
+  "$ref": "#/$defs/ExperimentalOptions",
+  "$defs": {
+    "ExperimentalOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "cache_file": {
+          "$ref": "#/$defs/CacheFileOptions"
+        },
+        "clash_api": {
+          "$ref": "#/$defs/ClashAPIOptions"
+        },
+        "v2ray_api": {
+          "$ref": "#/$defs/V2RayAPIOptions"
+        },
+        "debug": {
+          "$ref": "#/$defs/DebugOptions"
+        }
+      }
+    },
+
+    "CacheFileOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "path": {
+          "type": "string"
+        },
+        "cache_id": {
+          "type": "string"
+        },
+        "store_fakeip": {
+          "type": "boolean"
+        },
+        "store_rdrc": {
+          "type": "boolean"
+        },
+        "rdrc_timeout": {
+          "$ref": "#/$defs/Duration"
+        },
+        "store_dns": {
+          "type": "boolean"
+        }
+      }
+    },
+
+    "ClashAPIOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "external_controller": {
+          "type": "string"
+        },
+        "external_ui": {
+          "type": "string"
+        },
+        "external_ui_download_url": {
+          "type": "string"
+        },
+        "external_ui_download_detour": {
+          "type": "string"
+        },
+        "secret": {
+          "type": "string"
+        },
+        "default_mode": {
+          "type": "string"
+        },
+        "access_control_allow_origin": {
+          "$ref": "#/$defs/ListableString"
+        },
+        "access_control_allow_private_network": {
+          "type": "boolean"
+        },
+        "cache_file": {
+          "type": "string",
+          "description": "Deprecated: migrated to global cache file."
+        },
+        "cache_id": {
+          "type": "string",
+          "description": "Deprecated: migrated to global cache file."
+        },
+        "store_mode": {
+          "type": "boolean",
+          "description": "Deprecated: migrated to global cache file."
+        },
+        "store_selected": {
+          "type": "boolean",
+          "description": "Deprecated: migrated to global cache file."
+        },
+        "store_fakeip": {
+          "type": "boolean",
+          "description": "Deprecated: migrated to global cache file."
+        }
+      }
+    },
+
+    "V2RayAPIOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "listen": {
+          "type": "string"
+        },
+        "stats": {
+          "$ref": "#/$defs/V2RayStatsServiceOptions"
+        }
+      }
+    },
+
+    "V2RayStatsServiceOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "inbounds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "outbounds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+
+    "DebugOptions": {
+      "description": "Placeholder. Type referenced here but not defined in shown file.",
+      "type": "object"
+    },
+
+    "Duration": {
+      "description": "Placeholder for badoption.Duration.",
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "integer",
+          "minimum": 0
+        }
+      ]
+    },
+
+    "ListableString": {
+      "description": "Placeholder for badoption.Listable[string]. Accepts single string or array of strings in many sing-box option types.",
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  }
+}
