@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./route.json",
+  "title": "RouteOptions",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "geoip": {
+      "$ref": "./geoip.json"
+    },
+    "geosite": {
+      "$ref": "./geosite.json"
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "$ref": "./rule.json"
+      }
+    },
+    "rule_set": {
+      "type": "array",
+      "items": {
+        "$ref": "./rule-set.json"
+      }
+    },
+    "final": {
+      "type": "string"
+    },
+    "find_process": {
+      "type": "boolean"
+    },
+    "find_neighbor": {
+      "type": "boolean"
+    },
+    "dhcp_lease_files": {
+      "$ref": "./listable-string.json"
+    },
+    "auto_detect_interface": {
+      "type": "boolean"
+    },
+    "override_android_vpn": {
+      "type": "boolean"
+    },
+    "default_interface": {
+      "type": "string"
+    },
+    "default_mark": {
+      "$ref": "./fwmark.json"
+    },
+    "default_domain_resolver": {
+      "$ref": "./domain-resolve-options.json"
+    },
+    "default_network_strategy": {
+      "$ref": "./network-strategy.json"
+    },
+    "default_network_type": {
+      "$ref": "./listable-interface-type.json"
+    },
+    "default_fallback_network_type": {
+      "$ref": "./listable-interface-type.json"
+    },
+    "default_fallback_delay": {
+      "$ref": "./duration.json"
+    },
+    "default_http_client": {
+      "type": "string"
+    }
+  }
+}
