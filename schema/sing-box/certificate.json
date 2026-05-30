@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./certificate.schema.json",
+  "title": "CertificateOptions",
+  "$ref": "#/$defs/CertificateOptions",
+  "$defs": {
+    "CertificateOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "store": {
+          "type": "string",
+          "description": "If omitted or empty, runtime defaults to system certificate store."
+        },
+        "certificate": {
+          "$ref": "#/$defs/ListableString"
+        },
+        "certificate_path": {
+          "$ref": "#/$defs/ListableString"
+        },
+        "certificate_directory_path": {
+          "$ref": "#/$defs/ListableString"
+        }
+      }
+    },
+
+    "ListableString": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  }
+}
