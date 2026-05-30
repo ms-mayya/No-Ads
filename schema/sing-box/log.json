@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./log.json",
+  "title": "LogOptions",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "disabled": {
+      "type": "boolean"
+    },
+    "level": {
+      "type": "string"
+    },
+    "output": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "boolean"
+    }
+  }
+}
