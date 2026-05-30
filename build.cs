@@ -153,6 +153,7 @@ string SingBox(string action)
 
     var root = new JsonObject
     {
+        ["version"] = 4,
         ["rules"] = rulesArr
     };
 
