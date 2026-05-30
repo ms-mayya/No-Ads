@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./endpoint.schema.json",
+  "title": "Endpoint",
+  "$ref": "#/$defs/Endpoint",
+  "$defs": {
+    "Endpoint": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tag": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "direct" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "$ref": "#/$defs/DirectEndpointOptions"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "socks" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "$ref": "#/$defs/SocksEndpointOptions"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "http" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "$ref": "#/$defs/HTTPEndpointOptions"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "shadowsocks" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "$ref": "#/$defs/ShadowsocksEndpointOptions"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "vmess" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "$ref": "#/$defs/VMessEndpointOptions"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "trojan" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "$ref": "#/$defs/TrojanEndpointOptions"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "wireguard" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "$ref": "#/$defs/WireGuardEndpointOptions"
+          }
+        }
+      ],
+      "unevaluatedProperties": true,
+      "description": "Tagged union. Exact payload depends on runtime endpoint registry."
+    },
+
+    "DirectEndpointOptions": {
+      "description": "Placeholder. Define from concrete direct endpoint option type.",
+      "type": "object"
+    },
+    "SocksEndpointOptions": {
+      "description": "Placeholder. Define from concrete socks endpoint option type.",
+      "type": "object"
+    },
+    "HTTPEndpointOptions": {
+      "description": "Placeholder. Define from concrete http endpoint option type.",
+      "type": "object"
+    },
+    "ShadowsocksEndpointOptions": {
+      "description": "Placeholder. Define from concrete shadowsocks endpoint option type.",
+      "type": "object"
+    },
+    "VMessEndpointOptions": {
+      "description": "Placeholder. Define from concrete vmess endpoint option type.",
+      "type": "object"
+    },
+    "TrojanEndpointOptions": {
+      "description": "Placeholder. Define from concrete trojan endpoint option type.",
+      "type": "object"
+    },
+    "WireGuardEndpointOptions": {
+      "description": "Placeholder. Define from concrete wireguard endpoint option type.",
+      "type": "object"
+    }
+  }
+}
