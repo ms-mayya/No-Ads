@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using SharpYaml;
 
 // ── parse rules.yaml ─────────────────────────────────────────────────────────
@@ -36,7 +37,7 @@ foreach (var item in doc.Rules)
         rules.Add((parts[0], parts[1], parts[2]));
 }
 
-// ── generators ───────────────────────────────────────────────────────────────
+// ── generators ──────────────────────────────────────────────────────────────
 
 string ClashDomainSet(string action)
 {
@@ -119,11 +120,53 @@ string OpenClash()
     return sb.ToString();
 }
 
-// ── write outputs ─────────────────────────────────────────────────────────────
+string SingBox(string action)
+{
+    var selected = rules.Where(r => r.Action == action).ToList();
+    var rulesArr = new JsonArray();
+
+    void AddRule(string key, IEnumerable<string> values)
+    {
+        var distinct = values
+            .Where(v => !string.IsNullOrWhiteSpace(v))
+            .Distinct(StringComparer.Ordinal)
+            .OrderBy(v => v, StringComparer.Ordinal)
+            .ToList();
+
+        if (distinct.Count == 0) return;
+
+        var arr = new JsonArray();
+        foreach (var value in distinct)
+            arr.Add(value);
+
+        rulesArr.Add(new JsonObject
+        {
+            [key] = arr
+        });
+    }
+
+    AddRule("domain_suffix", selected.Where(r => r.Type == "DOMAIN-SUFFIX").Select(r => r.Value));
+    AddRule("domain_keyword", selected.Where(r => r.Type == "DOMAIN-KEYWORD").Select(r => r.Value));
+    AddRule("domain_regex", selected.Where(r => r.Type == "DOMAIN-REGEX").Select(r => r.Value));
+    AddRule("ip_cidr", selected.Where(r => r.Type is "IP-CIDR" or "IP-CIDR6").Select(r => r.Value));
+    AddRule("process_name", selected.Where(r => r.Type == "PROCESS-NAME").Select(r => r.Value));
+
+    var root = new JsonObject
+    {
+        ["version"] = 5,
+        ["rules"] = rulesArr
+    };
+
+    return root.ToJsonString(new JsonSerializerOptions { WriteIndented = true });
+}
+
+// ── write outputs ───────────────────────────────────────────────────────────
 
 var dist = "dist";
 var clashDir = Path.Combine(dist, "clash");
+var singBoxDir = Path.Combine(dist, "sing-box");
 Directory.CreateDirectory(clashDir);
+Directory.CreateDirectory(singBoxDir);
 
 var oc = OpenClash();
 var outputs = new Dictionary<string, string>
@@ -136,6 +179,9 @@ var outputs = new Dictionary<string, string>
     [Path.Combine(dist, "QX.conf")] = QX(),
     [Path.Combine(dist, "OpenClash.txt")] = oc,
     ["OpenClash.txt"] = oc,
+    [Path.Combine(singBoxDir, "reject.json")] = SingBox("REJECT"),
+    [Path.Combine(singBoxDir, "direct.json")] = SingBox("DIRECT"),
+    [Path.Combine(singBoxDir, "proxy.json")] = SingBox("PROXY"),
 };
 
 foreach (var (path, content) in outputs)
@@ -146,7 +192,7 @@ foreach (var (path, content) in outputs)
 Console.WriteLine("build complete.");
 return 0;
 
-// ── model ────────────────────────────────────────────────────────────────────
+// ── model ───────────────────────────────────────────────────────────────────
 
 record MitmConfig(string Hostname);
 record MetaConfig(string Name, string Desc, string Notes, MitmConfig Mitm);
