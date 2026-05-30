@@ -1,0 +1,680 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./service.schema.json",
+  "title": "Service",
+  "$ref": "#/$defs/Service",
+  "$defs": {
+    "Service": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "ccm",
+            "derp",
+            "hysteria-realm",
+            "ocm",
+            "resolved",
+            "ssm-api"
+          ]
+        },
+        "tag": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "type": { "const": "ccm" } },
+            "required": ["type"]
+          },
+          "then": { "$ref": "#/$defs/CCMServiceOptions" }
+        },
+        {
+          "if": {
+            "properties": { "type": { "const": "derp" } },
+            "required": ["type"]
+          },
+          "then": { "$ref": "#/$defs/DERPServiceOptions" }
+        },
+        {
+          "if": {
+            "properties": { "type": { "const": "hysteria-realm" } },
+            "required": ["type"]
+          },
+          "then": { "$ref": "#/$defs/HysteriaRealmServiceOptions" }
+        },
+        {
+          "if": {
+            "properties": { "type": { "const": "ocm" } },
+            "required": ["type"]
+          },
+          "then": { "$ref": "#/$defs/OCMServiceOptions" }
+        },
+        {
+          "if": {
+            "properties": { "type": { "const": "resolved" } },
+            "required": ["type"]
+          },
+          "then": { "$ref": "#/$defs/ResolvedServiceOptions" }
+        },
+        {
+          "if": {
+            "properties": { "type": { "const": "ssm-api" } },
+            "required": ["type"]
+          },
+          "then": { "$ref": "#/$defs/SSMAPIServiceOptions" }
+        }
+      ],
+      "unevaluatedProperties": true
+    },
+
+    "ResolvedServiceOptions": {
+      "allOf": [
+        { "$ref": "#/$defs/ListenOptions" }
+      ],
+      "description": "Defaults at runtime: listen=127.0.0.53, listen_port=53."
+    },
+
+    "HysteriaRealmServiceOptions": {
+      "type": "object",
+      "properties": {
+        "users": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/HysteriaRealmUser"
+          }
+        },
+        "idle_timeout": {
+          "$ref": "#/$defs/Duration"
+        },
+        "keep_alive_period": {
+          "$ref": "#/$defs/Duration"
+        },
+        "max_concurrent_streams": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "stream_receive_window": {
+          "$ref": "#/$defs/SizeCompat"
+        },
+        "connection_receive_window": {
+          "$ref": "#/$defs/SizeCompat"
+        }
+      },
+      "allOf": [
+        { "$ref": "#/$defs/ListenOptions" },
+        { "$ref": "#/$defs/InboundTLSOptionsContainer" }
+      ],
+      "unevaluatedProperties": true,
+      "description": "Runtime requires at least one user."
+    },
+
+    "HysteriaRealmUser": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "token": { "type": "string" },
+        "max_realms": { "type": "integer" }
+      },
+      "additionalProperties": false
+    },
+
+    "DERPServiceOptions": {
+      "type": "object",
+      "properties": {
+        "config_path": {
+          "type": "string"
+        },
+        "verify_client_endpoint": {
+          "$ref": "#/$defs/ListableString"
+        },
+        "verify_client_url": {
+          "$ref": "#/$defs/ListableDERPVerifyClientURLOptions"
+        },
+        "home": {
+          "type": "string"
+        },
+        "mesh_with": {
+          "$ref": "#/$defs/ListableDERPMeshOptions"
+        },
+        "mesh_psk": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "mesh_psk_file": {
+          "type": "string"
+        },
+        "stun": {
+          "$ref": "#/$defs/DERPSTUNListenOptions"
+        }
+      },
+      "allOf": [
+        { "$ref": "#/$defs/ListenOptions" },
+        { "$ref": "#/$defs/InboundTLSOptionsContainer" }
+      ],
+      "unevaluatedProperties": true,
+      "description": "Runtime requires tls.enabled=true and non-empty config_path."
+    },
+
+    "DERPVerifyClientURLOptions": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string"
+            }
+          },
+          "allOf": [
+            { "$ref": "#/$defs/HTTPClientOptions" }
+          ],
+          "unevaluatedProperties": true
+        }
+      ]
+    },
+
+    "DERPMeshOptions": {
+      "type": "object",
+      "properties": {
+        "server": {
+          "type": "string"
+        },
+        "server_port": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "host": {
+          "type": "string"
+        },
+        "tls": {
+          "$ref": "#/$defs/OutboundTLSOptions"
+        }
+      },
+      "allOf": [
+        { "$ref": "#/$defs/DialerOptions" }
+      ],
+      "unevaluatedProperties": true
+    },
+
+    "DERPSTUNListenOptions": {
+      "oneOf": [
+        {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            }
+          },
+          "allOf": [
+            { "$ref": "#/$defs/ListenOptions" }
+          ],
+          "unevaluatedProperties": true
+        }
+      ]
+    },
+
+    "CCMServiceOptions": {
+      "type": "object",
+      "properties": {
+        "credential_path": {
+          "type": "string"
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CCMUser"
+          }
+        },
+        "headers": {
+          "$ref": "#/$defs/HTTPHeader"
+        },
+        "detour": {
+          "type": "string"
+        },
+        "usages_path": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        { "$ref": "#/$defs/ListenOptions" },
+        { "$ref": "#/$defs/InboundTLSOptionsContainer" }
+      ],
+      "unevaluatedProperties": true
+    },
+
+    "CCMUser": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string" },
+        "token": { "type": "string" }
+      }
+    },
+
+    "OCMServiceOptions": {
+      "type": "object",
+      "properties": {
+        "credential_path": {
+          "type": "string"
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OCMUser"
+          }
+        },
+        "headers": {
+          "$ref": "#/$defs/HTTPHeader"
+        },
+        "detour": {
+          "type": "string"
+        },
+        "usages_path": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        { "$ref": "#/$defs/ListenOptions" },
+        { "$ref": "#/$defs/InboundTLSOptionsContainer" }
+      ],
+      "unevaluatedProperties": true
+    },
+
+    "OCMUser": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string" },
+        "token": { "type": "string" }
+      }
+    },
+
+    "SSMAPIServiceOptions": {
+      "type": "object",
+      "required": ["servers"],
+      "properties": {
+        "servers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "cache_path": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        { "$ref": "#/$defs/ListenOptions" },
+        { "$ref": "#/$defs/InboundTLSOptionsContainer" }
+      ],
+      "unevaluatedProperties": true
+    },
+
+    "ListenOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "listen": { "$ref": "#/$defs/Addr" },
+        "listen_port": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "bind_interface": { "type": "string" },
+        "routing_mark": { "$ref": "#/$defs/FwMark" },
+        "reuse_addr": { "type": "boolean" },
+        "netns": { "type": "string" },
+        "disable_tcp_keep_alive": { "type": "boolean" },
+        "tcp_keep_alive": { "$ref": "#/$defs/Duration" },
+        "tcp_keep_alive_interval": { "$ref": "#/$defs/Duration" },
+        "tcp_fast_open": { "type": "boolean" },
+        "tcp_multi_path": { "type": "boolean" },
+        "udp_fragment": { "type": "boolean" },
+        "udp_timeout": { "$ref": "#/$defs/UDPTimeoutCompat" },
+        "detour": { "type": "string" },
+        "proxy_protocol": { "type": "boolean" },
+        "proxy_protocol_accept_no_header": { "type": "boolean" }
+      }
+    },
+
+    "InboundTLSOptionsContainer": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tls": {
+          "$ref": "#/$defs/InboundTLSOptions"
+        }
+      }
+    },
+
+    "InboundTLSOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "server_name": { "type": "string" },
+        "insecure": { "type": "boolean" },
+        "alpn": { "$ref": "#/$defs/ListableString" },
+        "min_version": { "type": "string" },
+        "max_version": { "type": "string" },
+        "cipher_suites": { "$ref": "#/$defs/ListableString" },
+        "curve_preferences": { "$ref": "#/$defs/ListableCurvePreference" },
+        "certificate": { "$ref": "#/$defs/ListableString" },
+        "certificate_path": { "type": "string" },
+        "client_authentication": { "$ref": "#/$defs/ClientAuthType" },
+        "client_certificate": { "$ref": "#/$defs/ListableString" },
+        "client_certificate_path": { "$ref": "#/$defs/ListableString" },
+        "client_certificate_public_key_sha256": {
+          "$ref": "#/$defs/ListableString"
+        },
+        "key": { "$ref": "#/$defs/ListableString" },
+        "key_path": { "type": "string" },
+        "kernel_tx": { "type": "boolean" },
+        "kernel_rx": { "type": "boolean" },
+        "handshake_timeout": { "$ref": "#/$defs/Duration" },
+        "certificate_provider": {
+          "$ref": "#/$defs/CertificateProviderOptions"
+        },
+        "acme": {
+          "$ref": "#/$defs/InboundACMEOptions"
+        },
+        "ech": {
+          "$ref": "#/$defs/InboundECHOptions"
+        },
+        "reality": {
+          "$ref": "#/$defs/InboundRealityOptions"
+        }
+      }
+    },
+
+    "DialerOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "detour": { "type": "string" },
+        "bind_interface": { "type": "string" },
+        "inet4_bind_address": { "$ref": "#/$defs/Addr" },
+        "inet6_bind_address": { "$ref": "#/$defs/Addr" },
+        "bind_address_no_port": { "type": "boolean" },
+        "protect_path": { "type": "string" },
+        "routing_mark": { "$ref": "#/$defs/FwMark" },
+        "reuse_addr": { "type": "boolean" },
+        "netns": { "type": "string" },
+        "connect_timeout": { "$ref": "#/$defs/Duration" },
+        "tcp_fast_open": { "type": "boolean" },
+        "tcp_multi_path": { "type": "boolean" },
+        "disable_tcp_keep_alive": { "type": "boolean" },
+        "tcp_keep_alive": { "$ref": "#/$defs/Duration" },
+        "tcp_keep_alive_interval": { "$ref": "#/$defs/Duration" },
+        "udp_fragment": { "type": "boolean" },
+        "domain_resolver": { "$ref": "#/$defs/DomainResolveOptions" },
+        "network_strategy": { "$ref": "#/$defs/NetworkStrategy" },
+        "network_type": { "$ref": "#/$defs/ListableString" },
+        "fallback_network_type": { "$ref": "#/$defs/ListableString" },
+        "fallback_delay": { "$ref": "#/$defs/Duration" },
+        "domain_strategy": { "$ref": "#/$defs/DomainStrategy" }
+      }
+    },
+
+    "OutboundTLSOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "engine": { "type": "string" },
+        "disable_sni": { "type": "boolean" },
+        "server_name": { "type": "string" },
+        "insecure": { "type": "boolean" },
+        "alpn": { "$ref": "#/$defs/ListableString" },
+        "min_version": { "type": "string" },
+        "max_version": { "type": "string" },
+        "cipher_suites": { "$ref": "#/$defs/ListableString" },
+        "curve_preferences": { "$ref": "#/$defs/ListableCurvePreference" },
+        "certificate": { "$ref": "#/$defs/ListableString" },
+        "certificate_path": { "type": "string" },
+        "certificate_public_key_sha256": {
+          "$ref": "#/$defs/ListableString"
+        },
+        "client_certificate": { "$ref": "#/$defs/ListableString" },
+        "client_certificate_path": { "type": "string" },
+        "client_key": { "$ref": "#/$defs/ListableString" },
+        "client_key_path": { "type": "string" },
+        "fragment": { "type": "boolean" },
+        "fragment_fallback_delay": { "$ref": "#/$defs/Duration" },
+        "record_fragment": { "type": "boolean" },
+        "spoof": { "type": "string" },
+        "spoof_method": { "type": "string" },
+        "kernel_tx": { "type": "boolean" },
+        "kernel_rx": { "type": "boolean" },
+        "handshake_timeout": { "$ref": "#/$defs/Duration" },
+        "ech": { "$ref": "#/$defs/OutboundECHOptions" },
+        "utls": { "$ref": "#/$defs/OutboundUTLSOptions" },
+        "reality": { "$ref": "#/$defs/OutboundRealityOptions" }
+      }
+    },
+
+    "HTTPClientOptions": {
+      "description": "Placeholder. Exact fields not traced here.",
+      "type": "object"
+    },
+    "CertificateProviderOptions": {
+      "description": "Placeholder.",
+      "type": "object"
+    },
+    "InboundACMEOptions": {
+      "description": "Placeholder.",
+      "type": "object"
+    },
+    "DomainResolveOptions": {
+      "description": "Placeholder.",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "object" }
+      ]
+    },
+    "NetworkStrategy": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "null" }
+      ]
+    },
+    "DomainStrategy": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "null" }
+      ]
+    },
+    "Addr": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "null" }
+      ]
+    },
+    "FwMark": {
+      "oneOf": [
+        { "type": "integer", "minimum": 0 },
+        { "type": "string" }
+      ]
+    },
+    "Duration": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "integer", "minimum": 0 }
+      ]
+    },
+    "UDPTimeoutCompat": {
+      "oneOf": [
+        { "type": "integer", "minimum": 0 },
+        { "type": "string" }
+      ]
+    },
+    "SizeCompat": {
+      "description": "Placeholder for sing size-compatible numeric/string option.",
+      "oneOf": [
+        { "type": "integer", "minimum": 0 },
+        { "type": "string" }
+      ]
+    },
+    "ListableString": {
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      ]
+    },
+    "ListableDERPVerifyClientURLOptions": {
+      "oneOf": [
+        { "$ref": "#/$defs/DERPVerifyClientURLOptions" },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DERPVerifyClientURLOptions"
+          }
+        }
+      ]
+    },
+    "ListableDERPMeshOptions": {
+      "oneOf": [
+        { "$ref": "#/$defs/DERPMeshOptions" },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DERPMeshOptions"
+          }
+        }
+      ]
+    },
+    "ListableCurvePreference": {
+      "oneOf": [
+        { "$ref": "#/$defs/CurvePreference" },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CurvePreference"
+          }
+        }
+      ]
+    },
+    "CurvePreference": {
+      "type": "string",
+      "enum": [
+        "P256",
+        "P384",
+        "P521",
+        "X25519",
+        "X25519MLKEM768"
+      ]
+    },
+    "ClientAuthType": {
+      "type": "string",
+      "enum": [
+        "no",
+        "request",
+        "require-any",
+        "verify-if-given",
+        "require-and-verify"
+      ]
+    },
+    "HTTPHeader": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": {
+            "oneOf": [
+              { "type": "string" },
+              {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            ]
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "InboundECHOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "key": { "$ref": "#/$defs/ListableString" },
+        "key_path": { "type": "string" },
+        "pq_signature_schemes_enabled": { "type": "boolean" },
+        "dynamic_record_sizing_disabled": { "type": "boolean" }
+      }
+    },
+    "InboundRealityOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "handshake": {
+          "$ref": "#/$defs/InboundRealityHandshakeOptions"
+        },
+        "private_key": { "type": "string" },
+        "short_id": { "$ref": "#/$defs/ListableString" },
+        "max_time_difference": { "$ref": "#/$defs/Duration" }
+      }
+    },
+    "InboundRealityHandshakeOptions": {
+      "type": "object",
+      "properties": {
+        "server": { "type": "string" },
+        "server_port": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535
+        }
+      },
+      "allOf": [
+        { "$ref": "#/$defs/DialerOptions" }
+      ],
+      "unevaluatedProperties": true
+    },
+    "OutboundECHOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "config": { "$ref": "#/$defs/ListableString" },
+        "config_path": { "type": "string" },
+        "query_server_name": { "type": "string" },
+        "pq_signature_schemes_enabled": { "type": "boolean" },
+        "dynamic_record_sizing_disabled": { "type": "boolean" }
+      }
+    },
+    "OutboundUTLSOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "fingerprint": { "type": "string" }
+      }
+    },
+    "OutboundRealityOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "public_key": { "type": "string" },
+        "short_id": { "type": "string" }
+      }
+    }
+  }
+}
