@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "rules": [
+    {
+      "domain_suffix": [
+        "gouptech.com",
+        "gouptech.com.tw",
+        "mayya.dev"
+      ]
+    },
+    {
+      "ip_cidr": [
+        "125.227.149.0/24"
+      ]
+    }
+  ]
+}

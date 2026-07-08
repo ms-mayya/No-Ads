@@ -1,0 +1,22 @@
+{
+  "version": 4,
+  "rules": [
+    {
+      "domain_suffix": [
+        "adgw.alipay.com",
+        "adukwai.com",
+        "bugly.qq.com",
+        "c-ztuni.tec73.com",
+        "ctobsnssdk.com",
+        "dreport.meituan.net",
+        "guide-acs.m.taobao.com",
+        "ksedt.com",
+        "kuaishouzt.com",
+        "mtyun.com",
+        "sankuai.com",
+        "tdnsv5.com",
+        "wsdvs.com"
+      ]
+    }
+  ]
+}
