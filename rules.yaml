@@ -44,6 +44,7 @@ rules:
   # 直连域名
   - DOMAIN-SUFFIX,gouptech.com.tw,DIRECT
   - DOMAIN-SUFFIX,gouptech.com,DIRECT
+  - DOMAIN-SUFFIX,mayya.dev,DIRECT
   - IP-CIDR,125.227.149.0/24,DIRECT
 
   # 代理域名
