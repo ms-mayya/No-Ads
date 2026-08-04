@@ -50,6 +50,8 @@ rules:
   - DOMAIN-SUFFIX,gouptech.com,DIRECT
   - DOMAIN-SUFFIX,mayya.dev,DIRECT
   - IP-CIDR,125.227.149.0/24,DIRECT
+  - DOMAIN-SUFFIX,ikuai8.com,DIRECT
+  - DOMAIN-SUFFIX,ip.cn,DIRECT
 
   # 代理域名
   - DOMAIN-SUFFIX,teams.microsoft.com,PROXY
