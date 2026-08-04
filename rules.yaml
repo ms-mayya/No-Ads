@@ -53,6 +53,7 @@ rules:
   - DOMAIN-SUFFIX,ikuai8.com,DIRECT
   - DOMAIN-SUFFIX,ip.cn,DIRECT
   - DOMAIN-SUFFIX,jssinglewindow.cn,DIRECT
+  - DOMAIN-SUFFIX,fwmy.jssinglewindow.cn,DIRECT
 
   # 代理域名
   - DOMAIN-SUFFIX,teams.microsoft.com,PROXY
