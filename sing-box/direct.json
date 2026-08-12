@@ -1,0 +1,23 @@
+{
+  "version": 4,
+  "rules": [
+    {
+      "domain_suffix": [
+        "fwmy.jssinglewindow.cn",
+        "gouptech.com",
+        "gouptech.com.tw",
+        "ikuai8.com",
+        "ip.cn",
+        "jssinglewindow.cn",
+        "mayya.dev",
+        "njybjyybz.org.cn",
+        "wb.njybjyybz.org.cn"
+      ]
+    },
+    {
+      "ip_cidr": [
+        "125.227.149.0/24"
+      ]
+    }
+  ]
+}
