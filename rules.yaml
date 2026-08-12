@@ -54,6 +54,8 @@ rules:
   - DOMAIN-SUFFIX,ip.cn,DIRECT
   - DOMAIN-SUFFIX,jssinglewindow.cn,DIRECT
   - DOMAIN-SUFFIX,fwmy.jssinglewindow.cn,DIRECT
+  - DOMAIN-SUFFIX,wb.njybjyybz.org.cn,DIRECT
+  - DOMAIN-SUFFIX,njybjyybz.org.cn,DIRECT
 
   # 代理域名
   - DOMAIN-SUFFIX,teams.microsoft.com,PROXY
