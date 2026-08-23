@@ -58,7 +58,6 @@ rules:
   - DOMAIN-SUFFIX,njybjyybz.org.cn,DIRECT
 
   # 代理域名
-  - DOMAIN-SUFFIX,teams.microsoft.com,PROXY
   - DOMAIN-SUFFIX,live.com,PROXY
   - DOMAIN-SUFFIX,docker.io,PROXY
   - DOMAIN-SUFFIX,open-ai-connect.skype.com,PROXY
@@ -72,3 +71,8 @@ rules:
   - DOMAIN-SUFFIX,bing.com,PROXY
   - DOMAIN-SUFFIX,support.microsoft.com,PROXY
   - DOMAIN-SUFFIX,learn.microsoft.com,PROXY
+
+  # https://learn.microsoft.com/zh-cn/microsoft-365/enterprise/urls-and-ip-address-ranges?view=o365-worldwide#microsoft-teams
+  - IP-CIDR,52.112.0.0/14,PROXY
+  - IP-CIDR,52.122.0.0/15,PROXY
+  - DOMAIN-SUFFIX,teams.microsoft.com,PROXY
