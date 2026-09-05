@@ -56,6 +56,7 @@ rules:
   - DOMAIN-SUFFIX,fwmy.jssinglewindow.cn,DIRECT
   - DOMAIN-SUFFIX,wb.njybjyybz.org.cn,DIRECT
   - DOMAIN-SUFFIX,njybjyybz.org.cn,DIRECT
+  - DOMAIN-SUFFIX,ip.sb,DIRECT
 
   # 代理域名
   - DOMAIN-SUFFIX,live.com,PROXY
