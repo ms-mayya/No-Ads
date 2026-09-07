@@ -1,0 +1,29 @@
+{
+  "version": 4,
+  "rules": [
+    {
+      "domain_suffix": [
+        "apps.developermedia.com",
+        "bing.com",
+        "cloudfront.net",
+        "copilot.microsoft.com",
+        "csswg.org",
+        "dash.cloudflare.com",
+        "docker.io",
+        "github.io",
+        "learn.microsoft.com",
+        "live.com",
+        "open-ai-connect.skype.com",
+        "support.microsoft.com",
+        "teams.microsoft.com",
+        "visaindex.com"
+      ]
+    },
+    {
+      "ip_cidr": [
+        "52.112.0.0/14",
+        "52.122.0.0/15"
+      ]
+    }
+  ]
+}
