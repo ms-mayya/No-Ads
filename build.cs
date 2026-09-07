@@ -182,6 +182,9 @@ var outputs = new Dictionary<string, string>
     [Path.Combine(singBoxDir, "reject.json")] = SingBox("REJECT"),
     [Path.Combine(singBoxDir, "direct.json")] = SingBox("DIRECT"),
     [Path.Combine(singBoxDir, "proxy.json")] = SingBox("PROXY"),
+    [Path.Combine(singBoxDir, "mayya-reject.json")] = SingBox("REJECT"),
+    [Path.Combine(singBoxDir, "mayya-direct.json")] = SingBox("DIRECT"),
+    [Path.Combine(singBoxDir, "mayya-proxy.json")] = SingBox("PROXY"),
 };
 
 foreach (var (path, content) in outputs)
