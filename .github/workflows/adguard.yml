@@ -44,9 +44,12 @@ jobs:
           mkdir -p sing-box
           for name in $FILTERS; do
             echo "converting $name"
+            curl -fsSL \
+              "https://adguardteam.github.io/HostlistsRegistry/assets/${name}.txt" \
+              -o "${name}.txt"
             sing-box rule-set convert --type adguard \
               --output "sing-box/${name}.srs" \
-              "https://adguardteam.github.io/HostlistsRegistry/assets/${name}.txt"
+              "${name}.txt"
           done
 
       - name: Commit and push
