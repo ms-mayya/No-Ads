@@ -16,11 +16,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout release branch
+      - name: Checkout main
         uses: actions/checkout@v6
         with:
-          ref: release
-          fetch-depth: 0
+          ref: main
+          fetch-depth: 1
 
       - name: Set up .NET
         uses: actions/setup-dotnet@v5
@@ -30,16 +30,21 @@ jobs:
       - name: Build rule sets
         run: dotnet run build.cs
 
-      - name: Commit and push changes
+      - name: Push dist/ to release branch
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add dist
+          git fetch origin release:release || true
+          git worktree add /tmp/release release 2>/dev/null || git worktree add /tmp/release -B release origin/release
+
+          rsync -a --delete dist/ /tmp/release/
+
+          cd /tmp/release
+          git add -A
           if git diff --cached --quiet; then
             echo "no changes"
             exit 0
           fi
-
           git commit -m "chore: auto-build $(date -u '+%Y-%m-%d %H:%M UTC')"
           git push origin release
