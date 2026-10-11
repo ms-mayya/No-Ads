@@ -11,6 +11,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: release-branch-push
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,16 +35,21 @@ jobs:
         run: dotnet run build.cs
 
       - name: Push dist/ to release branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set -euo pipefail
+
+          rm -rf "$RUNNER_TEMP/release-repo"
+          git clone --branch release --depth 1 \
+            "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" \
+            "$RUNNER_TEMP/release-repo"
+
+          cp -a dist/. "$RUNNER_TEMP/release-repo/"
+
+          cd "$RUNNER_TEMP/release-repo"
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          git fetch origin release:release || true
-          git worktree add /tmp/release release 2>/dev/null || git worktree add /tmp/release -B release origin/release
-
-          rsync -a --delete dist/ /tmp/release/
-
-          cd /tmp/release
           git add -A
           if git diff --cached --quiet; then
             echo "no changes"
