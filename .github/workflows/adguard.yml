@@ -41,7 +41,7 @@ jobs:
 
       - name: Convert rule sets
         run: |
-          mkdir -p srs
+          mkdir -p sing-box
           for name in $FILTERS; do
             echo "converting $name"
             sing-box rule-set convert --type adguard \
