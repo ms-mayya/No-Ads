@@ -1,0 +1,62 @@
+name: Convert AdGuard filters to SRS
+
+on:
+  schedule:
+    - cron: "0 20 * * *" # daily 04:00 UTC+8
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-branch-push
+  cancel-in-progress: false
+
+env:
+  FILTERS: |
+    filter_21
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout release branch
+        uses: actions/checkout@v6
+        with:
+          ref: release
+          fetch-depth: 1
+
+      - name: Install sing-box
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag=$(gh api repos/SagerNet/sing-box/releases/latest --jq .tag_name)
+          gh release download "$tag" --repo SagerNet/sing-box \
+            --pattern 'sing-box-*-linux-amd64.tar.gz'
+          tar -xzf sing-box-*-linux-amd64.tar.gz
+          sudo install -m 755 sing-box-*-linux-amd64/sing-box /usr/local/bin/sing-box
+          rm -rf sing-box-*-linux-amd64*
+          sing-box version
+
+      - name: Convert rule sets
+        run: |
+          mkdir -p srs
+          for name in $FILTERS; do
+            echo "converting $name"
+            sing-box rule-set convert --type adguard \
+              --output "sing-box/${name}.srs" \
+              "https://adguardteam.github.io/HostlistsRegistry/assets/${name}.txt"
+          done
+
+      - name: Commit and push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add sing-box/*.srs
+          if git diff --cached --quiet; then
+            echo "no changes"
+            exit 0
+          fi
+          git commit -m "chore: update srs $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push origin release
