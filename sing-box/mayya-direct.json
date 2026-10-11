@@ -3,6 +3,8 @@
   "rules": [
     {
       "domain_suffix": [
+        "api.cloudflare.com",
+        "api.letsencrypt.org",
         "fwmy.jssinglewindow.cn",
         "gouptech.com",
         "gouptech.com.tw",
@@ -13,6 +15,11 @@
         "mayya.dev",
         "njybjyybz.org.cn",
         "wb.njybjyybz.org.cn"
+      ]
+    },
+    {
+      "domain_keyword": [
+        "_acme-challenge."
       ]
     },
     {

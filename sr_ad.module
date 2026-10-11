@@ -34,6 +34,9 @@ DOMAIN-SUFFIX,fwmy.jssinglewindow.cn,DIRECT
 DOMAIN-SUFFIX,wb.njybjyybz.org.cn,DIRECT
 DOMAIN-SUFFIX,njybjyybz.org.cn,DIRECT
 DOMAIN-SUFFIX,ip.sb,DIRECT
+DOMAIN-SUFFIX,api.letsencrypt.org,DIRECT
+DOMAIN-SUFFIX,api.cloudflare.com,DIRECT
+DOMAIN-KEYWORD,_acme-challenge.,DIRECT
 DOMAIN-SUFFIX,live.com,PROXY
 DOMAIN-SUFFIX,docker.io,PROXY
 DOMAIN-SUFFIX,open-ai-connect.skype.com,PROXY

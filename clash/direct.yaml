@@ -9,3 +9,5 @@ payload:
   - '+.wb.njybjyybz.org.cn'
   - '+.njybjyybz.org.cn'
   - '+.ip.sb'
+  - '+.api.letsencrypt.org'
+  - '+.api.cloudflare.com'
