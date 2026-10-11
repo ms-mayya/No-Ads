@@ -16,8 +16,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source
+      - name: Checkout release branch
         uses: actions/checkout@v6
+        with:
+          ref: release
+          fetch-depth: 0
 
       - name: Set up .NET
         uses: actions/setup-dotnet@v5
@@ -27,14 +30,16 @@ jobs:
       - name: Build rule sets
         run: dotnet run build.cs
 
-      - name: Push dist/ to release branch (overwrite)
+      - name: Commit and push changes
         run: |
-          cd dist
-          git init -b release
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
+
+          git add dist
+          if git diff --cached --quiet; then
+            echo "no changes"
+            exit 0
+          fi
+
           git commit -m "chore: auto-build $(date -u '+%Y-%m-%d %H:%M UTC')"
-          git remote add origin \
-            "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
-          git push --force origin release
+          git push origin release
