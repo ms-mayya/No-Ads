@@ -46,6 +46,7 @@ rules:
   - DOMAIN-SUFFIX,alpinekernel.com,REJECT
 
   # 直连域名
+  - DOMAIN-SUFFIX,push.apple.com,DIRECT
   - DOMAIN-SUFFIX,gouptech.com.tw,DIRECT
   - DOMAIN-SUFFIX,gouptech.com,DIRECT
   - DOMAIN-SUFFIX,mayya.dev,DIRECT
