@@ -17,11 +17,14 @@
   - DOMAIN-SUFFIX,alpinekernel.com,REJECT
   - DOMAIN-SUFFIX,push.apple.com,DIRECT
   - DOMAIN-SUFFIX,ikuai8.com,DIRECT
-  - DOMAIN-SUFFIX,ip.cn,DIRECT
   - DOMAIN-SUFFIX,jssinglewindow.cn,DIRECT
   - DOMAIN-SUFFIX,fwmy.jssinglewindow.cn,DIRECT
   - DOMAIN-SUFFIX,wb.njybjyybz.org.cn,DIRECT
   - DOMAIN-SUFFIX,njybjyybz.org.cn,DIRECT
+  - DOMAIN-SUFFIX,zconnect.cn,DIRECT
+  - DOMAIN-SUFFIX,zspace.cn,DIRECT
+  - DOMAIN-SUFFIX,zenithspace.net,DIRECT
+  - DOMAIN-SUFFIX,ip.cn,DIRECT
   - DOMAIN-SUFFIX,ip.sb,DIRECT
   - DOMAIN-SUFFIX,api.letsencrypt.org,DIRECT
   - DOMAIN-SUFFIX,api.cloudflare.com,DIRECT
