@@ -16,9 +16,6 @@
   - DOMAIN-SUFFIX,quietvertex.net,REJECT
   - DOMAIN-SUFFIX,alpinekernel.com,REJECT
   - DOMAIN-SUFFIX,push.apple.com,DIRECT
-  - DOMAIN-SUFFIX,gouptech.com.tw,DIRECT
-  - DOMAIN-SUFFIX,gouptech.com,DIRECT
-  - DOMAIN-SUFFIX,mayya.dev,DIRECT
   - DOMAIN-SUFFIX,ikuai8.com,DIRECT
   - DOMAIN-SUFFIX,ip.cn,DIRECT
   - DOMAIN-SUFFIX,jssinglewindow.cn,DIRECT

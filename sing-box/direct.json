@@ -6,13 +6,10 @@
         "api.cloudflare.com",
         "api.letsencrypt.org",
         "fwmy.jssinglewindow.cn",
-        "gouptech.com",
-        "gouptech.com.tw",
         "ikuai8.com",
         "ip.cn",
         "ip.sb",
         "jssinglewindow.cn",
-        "mayya.dev",
         "njybjyybz.org.cn",
         "push.apple.com",
         "wb.njybjyybz.org.cn"
@@ -21,11 +18,6 @@
     {
       "domain_keyword": [
         "_acme-challenge."
-      ]
-    },
-    {
-      "ip_cidr": [
-        "125.227.149.0/24"
       ]
     }
   ]
