@@ -16,6 +16,13 @@ env:
   FILTERS: |
     filter_1
     filter_21
+  HAGEZI_LISTS: |
+    light=https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/light.txt
+    normal=https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/multi.txt
+    pro=https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.txt
+    pro.plus=https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.plus.txt
+    ultimate=https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/ultimate.txt
+    tif=https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/tif.txt
 
 jobs:
   convert:
@@ -42,7 +49,10 @@ jobs:
 
       - name: Convert rule sets
         run: |
+          set -euo pipefail
           mkdir -p sing-box
+
+          # Existing HostlistsRegistry lists
           for name in $FILTERS; do
             echo "converting $name"
             curl -fsSL \
@@ -52,6 +62,16 @@ jobs:
               --output "sing-box/${name}.srs" \
               "${name}.txt"
           done
+
+          # HaGeZi AdGuard lists
+          while IFS='=' read -r name url; do
+            [ -z "${name}" ] && continue
+            echo "converting ${name}"
+            curl -fsSL "${url}" -o "${name}.txt"
+            sing-box rule-set convert --type adguard \
+              --output "sing-box/${name}.srs" \
+              "${name}.txt"
+          done <<< "$HAGEZI_LISTS"
 
       - name: Commit and push
         run: |
