@@ -23,6 +23,7 @@ env:
     pro.plus=https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.plus.txt
     ultimate=https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/ultimate.txt
     tif=https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/tif.txt
+    blocklist=https://raw.githubusercontent.com/ppfeufer/adguard-filter-list/refs/heads/master/blocklist
 
 jobs:
   convert:
