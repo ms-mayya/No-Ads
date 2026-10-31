@@ -65,6 +65,8 @@ rules:
   - DOMAIN-SUFFIX,api.cloudflare.com,DIRECT
   - DOMAIN-KEYWORD,_acme-challenge.,DIRECT
 
+  - DOMAIN-SUFFIX,msftconnecttest.com,DIRECT
+
   # 代理域名
   - DOMAIN-SUFFIX,live.com,PROXY
   - DOMAIN-SUFFIX,docker.io,PROXY
