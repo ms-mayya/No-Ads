@@ -30,6 +30,7 @@
   - DOMAIN-SUFFIX,api.cloudflare.com,DIRECT
   - DOMAIN-KEYWORD,_acme-challenge.,DIRECT
   - DOMAIN-SUFFIX,msftconnecttest.com,DIRECT
+  - DOMAIN-SUFFIX,www.msftncsi.com.edgesuite.net,DIRECT
   - DOMAIN-SUFFIX,msftncsi.com,DIRECT
   - DOMAIN-SUFFIX,live.com,PROXY
   - DOMAIN-SUFFIX,docker.io,PROXY
