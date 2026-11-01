@@ -66,6 +66,7 @@ rules:
   - DOMAIN-KEYWORD,_acme-challenge.,DIRECT
 
   - DOMAIN-SUFFIX,msftconnecttest.com,DIRECT
+  - DOMAIN-SUFFIX,msftncsi.com,DIRECT
 
   # 代理域名
   - DOMAIN-SUFFIX,live.com,PROXY
