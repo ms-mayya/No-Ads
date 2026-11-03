@@ -13,5 +13,3 @@ payload:
   - '+.api.letsencrypt.org'
   - '+.api.cloudflare.com'
   - '+.msftconnecttest.com'
-  - '+.www.msftncsi.com.edgesuite.net'
-  - '+.msftncsi.com'
