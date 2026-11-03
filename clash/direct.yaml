@@ -12,4 +12,3 @@ payload:
   - '+.ip.sb'
   - '+.api.letsencrypt.org'
   - '+.api.cloudflare.com'
-  - '+.www.msftconnecttest.com'
