@@ -65,8 +65,8 @@ rules:
   - DOMAIN-SUFFIX,api.cloudflare.com,DIRECT
   - DOMAIN-KEYWORD,_acme-challenge.,DIRECT
 
-  # https://learn.microsoft.com/zh-cn/windows-server/networking/ncsi/ncsi-overview
-  - DOMAIN-SUFFIX,www.msftconnecttest.com,DIRECT
+  # https://learn.microsoft.com/zh-cn/troubleshoot/windows-server/networking/troubleshoot-ncsi-guidance
+  # - DOMAIN-SUFFIX,www.msftconnecttest.com,DIRECT
 
   # 代理域名
   - DOMAIN-SUFFIX,live.com,PROXY
