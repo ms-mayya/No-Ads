@@ -66,7 +66,7 @@ rules:
   - DOMAIN-KEYWORD,_acme-challenge.,DIRECT
 
   # https://learn.microsoft.com/zh-cn/windows-server/networking/ncsi/ncsi-overview
-  - DOMAIN-SUFFIX,msftconnecttest.com,DIRECT
+  # - DOMAIN-SUFFIX,msftconnecttest.com,DIRECT
   # - DOMAIN-SUFFIX,www.msftncsi.com.edgesuite.net,DIRECT
   # - DOMAIN-SUFFIX,msftncsi.com,DIRECT
 
