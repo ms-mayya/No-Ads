@@ -74,6 +74,14 @@ jobs:
               "${name}.txt"
           done <<< "$HAGEZI_LISTS"
 
+          # sing-box source-format JSON rule sets
+          for file in sing-box/*.json; do
+            echo "compiling ${file}"
+            sing-box rule-set compile \
+              --output "${file%.json}.srs" \
+              "${file}"
+          done
+
       - name: Commit and push
         run: |
           git config user.name  "github-actions[bot]"
