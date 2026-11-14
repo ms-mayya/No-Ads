@@ -65,6 +65,9 @@ rules:
   - DOMAIN-SUFFIX,api.cloudflare.com,DIRECT
   - DOMAIN-KEYWORD,_acme-challenge.,DIRECT
 
+  # UniFi
+  - DOMAIN-KEYWORD,ui.com,DIRECT
+
   # https://learn.microsoft.com/zh-cn/troubleshoot/windows-server/networking/troubleshoot-ncsi-guidance
   # - DOMAIN-SUFFIX,www.msftconnecttest.com,DIRECT
 
