@@ -20,7 +20,8 @@
     },
     {
       "domain_keyword": [
-        "_acme-challenge."
+        "_acme-challenge.",
+        "ui.com"
       ]
     }
   ]
