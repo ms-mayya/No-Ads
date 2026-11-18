@@ -44,6 +44,7 @@
   - DOMAIN-SUFFIX,support.microsoft.com,PROXY
   - DOMAIN-SUFFIX,learn.microsoft.com,PROXY
   - DOMAIN-SUFFIX,teams.microsoft.com,PROXY
+  - DOMAIN-SUFFIX,tflteams.public.onecdn.static.microsoft,DIRECT
 +proxy-groups:
   - name: PROXY
     type: select
