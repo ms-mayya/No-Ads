@@ -90,3 +90,4 @@ rules:
   - IP-CIDR,52.112.0.0/14,PROXY
   - IP-CIDR,52.122.0.0/15,PROXY
   - DOMAIN-SUFFIX,teams.microsoft.com,PROXY
+  - DOMAIN-SUFFIX,tflteams.public.onecdn.static.microsoft,DIRECT
