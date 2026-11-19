@@ -90,4 +90,7 @@ rules:
   - IP-CIDR,52.112.0.0/14,PROXY
   - IP-CIDR,52.122.0.0/15,PROXY
   - DOMAIN-SUFFIX,teams.microsoft.com,PROXY
-  - DOMAIN-SUFFIX,tflteams.public.onecdn.static.microsoft,DIRECT
+  # https://learn.microsoft.com/en-us/microsoft-365/enterprise/urls-and-ip-address-ranges?view=o365-worldwide#microsoft-365-unified-domains
+  # Dedicated to static (not customer generated) content hosted on CDNs.
+  - DOMAIN-SUFFIX,static.microsoft,DIRECT
+  - DOMAIN-SUFFIX,usercontent.microsoft,DIRECT
