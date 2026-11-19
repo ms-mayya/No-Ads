@@ -12,4 +12,5 @@ payload:
   - '+.ip.sb'
   - '+.api.letsencrypt.org'
   - '+.api.cloudflare.com'
-  - '+.tflteams.public.onecdn.static.microsoft'
+  - '+.static.microsoft'
+  - '+.usercontent.microsoft'
