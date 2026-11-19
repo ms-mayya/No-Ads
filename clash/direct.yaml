@@ -12,5 +12,3 @@ payload:
   - '+.ip.sb'
   - '+.api.letsencrypt.org'
   - '+.api.cloudflare.com'
-  - '+.static.microsoft'
-  - '+.usercontent.microsoft'

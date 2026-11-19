@@ -44,8 +44,7 @@
   - DOMAIN-SUFFIX,support.microsoft.com,PROXY
   - DOMAIN-SUFFIX,learn.microsoft.com,PROXY
   - DOMAIN-SUFFIX,teams.microsoft.com,PROXY
-  - DOMAIN-SUFFIX,static.microsoft,DIRECT
-  - DOMAIN-SUFFIX,usercontent.microsoft,DIRECT
+  - DOMAIN-SUFFIX,static.microsoft,PROXY
 +proxy-groups:
   - name: PROXY
     type: select
