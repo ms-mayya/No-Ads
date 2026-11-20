@@ -21,15 +21,15 @@ jobs:
 
     steps:
       - name: Checkout main
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: main
           fetch-depth: 1
 
       - name: Set up .NET
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: "10.x"
+          dotnet-version: "11.x"
 
       - name: Build rule sets
         run: dotnet run build.cs
