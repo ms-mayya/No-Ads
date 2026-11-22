@@ -23,7 +23,8 @@ URL-REGEX,^https?:\/\/.+\.hellobike\.com\/api\?query\.popup\.entrance,REJECT
 DOMAIN-SUFFIX,bugly.qq.com,REJECT
 DOMAIN-SUFFIX,quietvertex.net,REJECT
 DOMAIN-SUFFIX,alpinekernel.com,REJECT
-DOMAIN-SUFFIX,push.apple.com,DIRECT
+DOMAIN-SUFFIX,init-p01st.push.apple.com,Direct
+DOMAIN-SUFFIX,init-s01st.push.apple.com,Direct
 DOMAIN-SUFFIX,ikuai8.com,DIRECT
 DOMAIN-SUFFIX,jssinglewindow.cn,DIRECT
 DOMAIN-SUFFIX,fwmy.jssinglewindow.cn,DIRECT
