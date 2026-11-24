@@ -1,0 +1,16 @@
+{
+  "version": 4,
+  "rules": [
+    {
+      "domain_suffix": [
+        "teams.microsoft.com"
+      ]
+    },
+    {
+      "ip_cidr": [
+        "52.112.0.0/14",
+        "52.122.0.0/15"
+      ]
+    }
+  ]
+}
